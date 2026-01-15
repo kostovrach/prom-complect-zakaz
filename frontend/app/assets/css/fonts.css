@@ -1,0 +1,32 @@
+/* Inter */
+@font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    src:
+        url('../fonts/Inter-Variable.woff2') format('woff2'),
+        url('../fonts/Inter-Variable.ttf') format('ttf');
+    font-weight: 350 900;
+    font-style: normal;
+}
+
+/* Nunito */
+@font-face {
+    font-family: 'Nunito';
+    font-display: swap;
+    src:
+        url('../fonts/Nunito-Variable.woff2') format('woff2'),
+        url('../fonts/Nunito-Variable.ttf') format('ttf');
+    font-weight: 350 900;
+    font-style: normal;
+}
+
+/* Nuniti */
+@font-face {
+    font-family: 'Nuniti';
+    font-display: swap;
+    src:
+        url('../fonts/NunitoSans-Variable.woff2') format('woff2'),
+        url('../fonts/NunitoSans-Variable.ttf') format('ttf');
+    font-weight: 350 900;
+    font-style: normal;
+}
