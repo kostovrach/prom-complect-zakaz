@@ -311,6 +311,185 @@
     }
 }
 
+@mixin modal-form() {
+    position: fixed;
+    width: rem(640);
+    height: 100lvh;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    display: block;
+    color: $c-FFFFFF;
+    background-color: $c-082605;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 15%);
+    @media (max-width: rem(640)) {
+        width: 100vw;
+    }
+    &__close {
+        cursor: pointer;
+        position: absolute;
+        top: rem(32);
+        right: rem(24);
+        color: $c-FFFFFF;
+    }
+    &__container {
+        width: 100%;
+        height: 100lvh;
+        display: flex;
+        flex-direction: column;
+        gap: rem(64);
+        overflow-y: auto;
+        padding: rem(128) lineScale(64, 32, 480, 1920);
+    @include hide-scrollbar();
+    }
+    &__titlebox {
+        display: flex;
+        flex-direction: column;
+        gap: rem(16);
+    }
+    &__title {
+        font-family: 'Nuniti', sans-serif;
+        font-size: lineScale(64, 30, 480, 1920);
+        font-weight: $fw-bold;
+    }
+    &__desc {
+        font-size: lineScale(18, 16, 480, 1920);
+        line-height: 1.2;
+    }
+    &__data {
+        display: flex;
+        flex-direction: column;
+        gap: rem(32);
+    }
+    &__inputbox {
+        position: relative;
+        border-bottom: rem(1) solid $c-FFF3B0;
+        padding: rem(24) 0;
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: rem(2);
+            background-color: $c-FFF3B0;
+            transition: width $td $tf;
+            will-change: width;
+        }
+        > input,
+        > textarea {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            appearance: none;
+            font-family: inherit;
+            color: inherit;
+            font-size: lineScale(20, 18, 480, 1920);
+            background-color: transparent;
+            &::placeholder {
+                color: transparent;
+            }
+        }
+        > span {
+            position: absolute;
+            left: 0;
+            font-family: 'Nuniti', sans-serif;
+            font-size: lineScale(24, 20, 480, 1920);
+            opacity: 0.5;
+            will-change: translate, opacity, font-size;
+            transition: all $td $tf;
+            pointer-events: none;
+        }
+        &--file {
+            position: relative;
+            width: 100%;
+            display: grid;
+            justify-content: space-between;
+            align-items: center;
+            grid-template-areas:
+                'label icon'
+                'hr hr'
+                'input input';
+            gap: rem(16) rem(0);
+            > input {
+                grid-area: input;
+                &::-webkit-file-upload-button,
+                &::file-selector-button {
+                    display: none;
+                }
+            }
+            > span {
+                grid-area: label;
+                font-family: 'Nuniti', sans-serif;
+                font-size: lineScale(24, 20, 480, 1920);
+                opacity: 0.5;
+            }
+            > svg {
+                grid-area: icon;
+                opacity: 0.25;
+            }
+            > hr {
+                grid-area: hr;
+                width: 100%;
+                height: rem(2);
+                background-color: $c-FFF3B0;
+            }
+        }
+        &--tarea {
+            height: rem(128);
+            > textarea {
+                width: 100%;
+                height: 100%;
+                resize: none;
+            }
+            > span {
+                top: 0;
+            }
+            &:has(textarea:focus),
+            &:not(:has(textarea:placeholder-shown)) {
+                > span {
+                    font-size: rem(14);
+                    color: $c-FFF3B0;
+                    font-weight: $fw-bold;
+                    translate: 0 rem(-16);
+                    opacity: 1;
+                }
+                &::before {
+                    width: 100%;
+                }
+            }
+        }
+        &--input {
+            > span {
+                top: 50%;
+                left: 0;
+                translate: 0 -50%;
+            }
+            &:has(input:focus),
+            &:not(:has(input:placeholder-shown)) {
+                > span {
+                    font-size: rem(14);
+                    color: $c-FFF3B0;
+                    font-weight: $fw-bold;
+                    translate: 0 rem(-32);
+                    opacity: 1;
+                }
+                &::before {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    &__controls {
+        display: flex;
+        flex-direction: column;
+        gap: rem(16);
+    }
+    &__agreement {
+        @include agreement;
+    }
+}
+
 @mixin skeleton(
     $color: $skeleton-color,
     $anim-color: linear-gradient(90deg, transparent, rgba(#ffffff, 0.4), transparent)

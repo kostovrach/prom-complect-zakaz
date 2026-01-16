@@ -4,11 +4,11 @@
         v-bind="{ ...attrs, ...$attrs }"
         :id="id || undefined"
         :class="['link-primary', props.class]"
-        :style="{ '--overlay-size': `${props.overlaySize / 16}rem` }"
+        :style="{ '--overlay-size': `${props.iconSize / 16}rem` }"
         unstyled
     >
         <span class="link-primary__icon">
-            <SvgSprite type="arrow" :size="24" />
+            <SvgSprite type="arrow" :size="props.iconSize" />
         </span>
         <span class="link-primary__text">
             <slot></slot>
@@ -29,7 +29,7 @@
             target?: '' | '_blank' | '_self' | '_parent' | '_top';
             id?: string;
             class?: string | Record<string, any>;
-            overlaySize?: number;
+            iconSize?: number;
         }>(),
         {
             type: 'a',
@@ -39,7 +39,7 @@
             target: '',
             id: '',
             class: '',
-            overlaySize: 24,
+            iconSize: 24,
         }
     );
 

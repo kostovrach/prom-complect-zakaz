@@ -1,7 +1,23 @@
 <template>
     <section class="home-hero">
         <div class="home-hero__container">
-            <EmblaContainer ref="sliderRef" class="home-hero__slider">
+            <div class="home-hero__nav">
+                <LinkPrimary
+                    v-for="service in services"
+                    :key="service.id"
+                    class="home-hero__nav-item"
+                    :icon-size="16"
+                    type="NuxtLink"
+                    :to="{
+                        name: 'service',
+                        params: { service: slugify(service.hero_title) },
+                        query: { id: service.id },
+                    }"
+                >
+                    {{ service.hero_title }}
+                </LinkPrimary>
+            </div>
+            <EmblaContainer ref="sliderRef" class="home-hero__slider" fade>
                 <EmblaSlide
                     v-for="(slide, idx) in props.slides"
                     :key="idx"
@@ -38,13 +54,15 @@
                                 class="home-hero__slide-button"
                                 theme="yellow"
                                 type="button"
+                                button-type="button"
+                                @click="openModalRequest"
                             >
                                 Обсудить проект
                             </ButtonPrimary>
                             <LinkPrimary
                                 class="home-hero__slide-link"
                                 type="NuxtLink"
-                                :to="{ name: 'index' }"
+                                :to="{ name: 'quiz' }"
                             >
                                 Подобрать оборудование
                             </LinkPrimary>
@@ -64,7 +82,9 @@
 
 <script setup lang="ts">
     import type { IDirectusFile } from '~~/interfaces/directus-file';
-    import type { EmblaCarouselType } from 'embla-carousel';
+    import type { EmblaCarouselType, EmblaEventType } from 'embla-carousel';
+    import { useModal } from 'vue-final-modal';
+    import { ModalsFormRequest } from '#components';
 
     const props = withDefaults(
         defineProps<{
@@ -79,7 +99,111 @@
         }
     );
 
+    const servicesStore = useServicesStore();
+
+    // Slider ===================================================
+    const TWEEN_FACTOR_BASE = 0.2;
+
     const sliderRef = ref<{ emblaApi: EmblaCarouselType | null } | null>(null);
+    const sliderApi = computed(() => sliderRef.value?.emblaApi);
+
+    const tweenFactor = ref(0);
+    const tweenNodes = ref<HTMLElement[]>([]);
+    const tweenNodesReverse = ref<HTMLElement[]>([]);
+
+    function setTweenFactor() {
+        if (!sliderApi.value) return;
+
+        tweenFactor.value = TWEEN_FACTOR_BASE * sliderApi.value.scrollSnapList().length;
+    }
+
+    function setTweenNodes() {
+        if (!sliderApi.value) return;
+
+        const nodes = sliderApi.value.slideNodes().map((slideNode) => {
+            return slideNode.querySelector('.home-hero__slide-title');
+        });
+
+        const nodesReverse = sliderApi.value.slideNodes().map((slideNode) => {
+            return slideNode.querySelector('.home-hero__slide-subtitle');
+        });
+
+        tweenNodes.value = nodes.filter((node) => node instanceof HTMLElement);
+        tweenNodesReverse.value = nodesReverse.filter((node) => node instanceof HTMLElement);
+    }
+
+    function tweenParallax(eventName?: EmblaEventType) {
+        if (!sliderApi.value) return;
+
+        const engine = sliderApi.value.internalEngine();
+        const scrollProgress = sliderApi.value.scrollProgress();
+        const slidesInView = sliderApi.value.slidesInView();
+        const isScrollEvent = eventName === 'scroll';
+
+        sliderApi.value.scrollSnapList().forEach((scrollSnap, snapIdx) => {
+            let diffToTarget = scrollSnap - scrollProgress;
+            const slidesInSnap = engine.slideRegistry[snapIdx] ?? [];
+
+            slidesInSnap.forEach((slideIdx) => {
+                if (isScrollEvent && !slidesInView.includes(slideIdx)) return;
+
+                if (engine.options.loop) {
+                    engine.slideLooper.loopPoints.forEach((loopItem) => {
+                        const target = loopItem.target();
+
+                        if (slideIdx === loopItem.index && target !== 0) {
+                            const sign = Math.sign(target);
+
+                            if (sign === -1) {
+                                diffToTarget = scrollSnap - (1 + scrollProgress);
+                            }
+                            if (sign === 1) {
+                                diffToTarget = scrollSnap + (1 - scrollProgress);
+                            }
+                        }
+                    });
+                }
+
+                const translate = diffToTarget * (-1 * tweenFactor.value) * 100;
+                const tweenNode = tweenNodes.value[slideIdx];
+                const tweenNodeReverse = tweenNodesReverse.value[slideIdx];
+
+                if (!tweenNode || !tweenNodeReverse) return;
+
+                tweenNode.style.transform = `translateX(${translate}rem)`;
+                tweenNodeReverse.style.transform = `translateX(${translate * -1}rem)`;
+            });
+        });
+    }
+    // ==========================================================
+
+    const services = computed(() => servicesStore.services);
+
+    const { open: openModalRequest, close: _closeModalRequest } = useModal({
+        component: ModalsFormRequest,
+        attrs: {
+            onClose() {
+                _closeModalRequest();
+            },
+        },
+    });
+
+    // Lifecycle ================================================
+    onMounted(() => {
+        if (!sliderApi.value) return;
+
+        setTweenNodes();
+        setTweenFactor();
+        tweenParallax();
+
+        sliderApi.value
+            .on('reInit', setTweenNodes)
+            .on('reInit', setTweenFactor)
+            .on('reInit', (_, event) => tweenParallax(event))
+            .on('scroll', (_, event) => tweenParallax(event))
+            .on('slideFocus', (_, event) => tweenParallax(event));
+    });
+    // ==========================================================
 </script>
 
 <style scoped lang="scss">
@@ -87,6 +211,7 @@
 
     .home-hero {
         position: relative;
+        @include content-block($margin: rem(64));
         &__container {
             @include content-container;
             @media (max-width: 768px) {
@@ -110,57 +235,9 @@
                 justify-content: space-between;
                 gap: lineScale(128, 64, 480, 1920);
                 text-align: right;
+                text-transform: uppercase;
                 padding: rem(12) 0;
                 border-bottom: rem(1) solid rgba($c-FFF3B0, 0.5);
-                // @include arrow-link($overlay-size: rem(18));
-            }
-        }
-        &__button {
-            cursor: pointer;
-            position: relative;
-            transition: scale $td $tf;
-            &::before {
-                content: '';
-                position: absolute;
-                z-index: -1;
-                top: 50%;
-                left: 50%;
-                translate: -50% -50%;
-                background-color: $c-main;
-                width: rem(64);
-                aspect-ratio: 1;
-                border-radius: 50%;
-                opacity: 0;
-                transition: opacity $td $tf;
-            }
-            @media (pointer: fine) {
-                &:hover {
-                    scale: 1.05;
-                    color: $c-FFFFFF;
-                    &::before {
-                        opacity: 1;
-                    }
-                }
-            }
-            &:active {
-                scale: 0.99;
-            }
-            &--prev {
-                transform: scaleX(-1);
-            }
-        }
-        &__pagination {
-            width: fit-content;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: rem(8);
-            font-weight: $fw-bold;
-            &-separator {
-                display: block;
-                width: rem(18);
-                height: rem(2);
-                background-color: currentColor;
             }
         }
         &__slide {
@@ -172,10 +249,7 @@
             align-items: flex-end;
             justify-content: flex-start;
             color: $c-FFFFFF;
-            pointer-events: all !important;
-            // &:not(.current) {
-            // 	opacity: 0;
-            // }
+            overflow: hidden;
             &-bg {
                 position: absolute;
                 z-index: -1;
@@ -185,6 +259,11 @@
                 object-fit: cover;
                 filter: brightness(50%);
                 @include fullscreen-double-corner;
+                &-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             }
             &-content {
                 position: relative;

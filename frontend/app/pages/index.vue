@@ -37,7 +37,4 @@
         'hero.home_hero_id.*',
         'hero.home_hero_id.file.*',
     ]);
-
-    const { content: test } = await useCms<IPage>('services', []);
-    console.log(test.value);
 </script>

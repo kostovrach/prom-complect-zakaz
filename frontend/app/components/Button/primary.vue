@@ -9,7 +9,12 @@
             '--overlay-size': `${props.overlaySize / 16}rem`,
         }"
         ref="buttonRef"
-        :class="['button-primary', `button-primary--${props.theme}`, props.class]"
+        :class="[
+            'button-primary',
+            `button-primary--${props.theme}`,
+            { 'button-primary--compact': props.compact },
+            props.class,
+        ]"
         @mousemove="moveButton"
         @mouseout="resetButtonAnim"
     >
@@ -35,7 +40,8 @@
             width?: 'fit-content' | '100%';
             class?: string | Record<string, any>;
             overlaySize?: number;
-            theme?: 'gray' | 'accent' | 'yellow' | 'light';
+            theme?: 'gray' | 'accent' | 'yellow' | 'light' | 'dark' | 'transparent';
+            compact?: boolean;
         }>(),
         {
             type: 'a',
@@ -48,6 +54,7 @@
             class: '',
             overlaySize: 100,
             theme: 'accent',
+            compact: false,
         }
     );
 
@@ -168,6 +175,47 @@
                     }
                 }
             }
+        }
+        &--light {
+            color: $c-FFFFFF;
+            &::before {
+                background-color: $c-secondary;
+            }
+            &::after {
+                background-color: $c-secondary;
+            }
+
+            @media (pointer: fine) {
+                &:hover {
+                    color: $c-082605;
+                    &::before {
+                        background-color: $c-FFFFFF;
+                    }
+                }
+            }
+        }
+        &--transparent {
+            padding: rem(12) rem(40);
+            color: $c-secondary;
+            &::before {
+                background-color: $c-main;
+            }
+            &::after {
+                background-color: $c-secondary;
+            }
+
+            @media (pointer: fine) {
+                &:hover {
+                    color: $c-FFFFFF;
+                    &::before {
+                        background-color: $c-secondary;
+                    }
+                }
+            }
+        }
+        &--compact {
+            padding: rem(10) rem(48);
+            font-size: rem(12);
         }
         &:active {
             scale: 0.99;
