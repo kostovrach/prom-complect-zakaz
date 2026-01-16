@@ -1,21 +1,17 @@
 <template>
-    <header
-        :class="['header']"
-    >
-        <div class="header__container">
-        </div>
+    <header :class="['header']">
+        <div class="header__container"></div>
     </header>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
     @use '~/assets/scss/abstracts' as *;
 
     .header {
         $p: &;
-        
+
         &__container {
             display: flex;
             align-items: center;

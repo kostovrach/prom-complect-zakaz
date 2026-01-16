@@ -1,11 +1,5 @@
 <template>
-    <section
-        :class="[
-            'block-layout',
-            `block-layout--${props.layout}`,
-            props.class,
-        ]"
-    >
+    <section :class="['block-layout', `block-layout--${props.layout}`, props.class]">
         <div :class="['block-layout__container', props.containerClass]">
             <div ref="container" class="block-layout__titlebox">
                 <div
@@ -122,7 +116,6 @@
             }
         }
         &__title {
-
             > span {
                 color: transparent;
                 background-image: linear-gradient(90deg, $c-1C3A19 50%, $c-secondary 50%);

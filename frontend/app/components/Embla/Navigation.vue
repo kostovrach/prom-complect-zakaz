@@ -80,50 +80,50 @@
         display: flex;
         align-items: center;
         gap: rem(32);
-        color: $c-01010B;
-        font-weight: $fw-semi;
         &__button {
             cursor: pointer;
-            width: rem(56);
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-
-            background-image: linear-gradient(to right, $c-accent 35%, $c-DFDFDF 60%);
-            background-size: 250%;
-            background-repeat: no-repeat;
-            background-position: 100%;
-            transition:
-                background-position $td $tf,
-                color $td $tf,
-                scale $td $tf;
+            position: relative;
+            transition: scale $td $tf;
+            &::before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                top: 50%;
+                left: 50%;
+                translate: -50% -50%;
+                background-color: $c-accent;
+                width: rem(64);
+                aspect-ratio: 1;
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity $td $tf;
+            }
             @media (pointer: fine) {
                 &:hover {
+                    scale: 1.05;
                     color: $c-FFFFFF;
-                    background-position: 0 0;
+                    &::before {
+                        opacity: 1;
+                    }
                 }
             }
-            &:disabled {
-                pointer-events: none;
-                opacity: 0.5;
-            }
             &:active {
-                color: $c-FFFFFF;
-                background-image: linear-gradient(to top, $c-01010B);
-                scale: 0.95;
+                scale: 0.99;
             }
             &--prev {
                 transform: scaleX(-1);
             }
         }
         &__pagination {
+            width: fit-content;
             display: flex;
             align-items: center;
-            gap: rem(6);
+            justify-content: center;
+            gap: rem(8);
+            font-weight: $fw-bold;
             &-separator {
-                width: rem(16);
+                display: block;
+                width: rem(18);
                 height: rem(2);
                 background-color: currentColor;
             }

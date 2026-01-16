@@ -29,7 +29,7 @@
             type?: 'button' | 'a' | 'NuxtLink';
             to?: RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric;
             href?: string;
-            buttonType?: string;
+            buttonType?: 'button' | 'submit' | 'reset';
             target?: '' | '_blank' | '_self' | '_parent' | '_top';
             id?: string;
             width?: 'fit-content' | '100%';
@@ -82,25 +82,52 @@
     const STRENGTH = 30;
     const isClient = import.meta.client;
     const ease = Power4.easeOut;
-    const buttonRef = ref<HTMLElement | null>(null);
+    const buttonRef = ref<HTMLElement | ComponentPublicInstance<{ $el: HTMLElement }> | null>(null);
 
-    function moveButton(event: MouseEvent) {
-        if (!isClient || window.matchMedia('(pointer: coarse)').matches || !buttonRef.value) return;
+    const moveButton = ref((event: MouseEvent): void => {});
+    const resetButtonAnim = ref((): void => {});
 
-        const bounding = buttonRef.value.getBoundingClientRect();
+    onMounted(() => {
+        moveButton.value = (event: MouseEvent) => {
+            if (!isClient || window.matchMedia('(pointer: coarse)').matches || !buttonRef.value)
+                return;
 
-        gsap.to(buttonRef.value, {
-            x: ((event.clientX - bounding.left) / buttonRef.value.offsetWidth - 0.5) * STRENGTH,
-            y: ((event.clientY - bounding.top) / buttonRef.value.offsetHeight - 0.5) * STRENGTH,
-            ease,
-        });
-    }
+            let bounding: DOMRect;
+            let offsetWidth: number;
+            let offsetHeight: number;
+            let target: HTMLElement;
 
-    function resetButtonAnim() {
-        if (!buttonRef.value) return;
+            if (buttonRef.value instanceof HTMLElement) {
+                bounding = buttonRef.value.getBoundingClientRect();
+                offsetWidth = buttonRef.value.offsetWidth;
+                offsetHeight = buttonRef.value.offsetHeight;
+                target = buttonRef.value;
+            } else {
+                bounding = buttonRef.value.$el.getBoundingClientRect();
+                offsetWidth = buttonRef.value.$el.offsetWidth;
+                offsetHeight = buttonRef.value.$el.offsetHeight;
+                target = buttonRef.value.$el;
+            }
 
-        gsap.to(buttonRef.value, { duration: 1, x: 0, y: 0, ease });
-    }
+            gsap.to(target, {
+                x: ((event.clientX - bounding.left) / offsetWidth - 0.5) * STRENGTH,
+                y: ((event.clientY - bounding.top) / offsetHeight - 0.5) * STRENGTH,
+                ease,
+            });
+        };
+
+        resetButtonAnim.value = () => {
+            if (!buttonRef.value) return;
+
+            const gsapVars = { duration: 1, x: 0, y: 0, ease };
+
+            if (buttonRef.value instanceof HTMLElement) {
+                gsap.to(buttonRef.value, gsapVars);
+            } else {
+                gsap.to(buttonRef.value.$el, gsapVars);
+            }
+        };
+    });
 </script>
 
 <style scoped lang="scss">
@@ -119,20 +146,29 @@
 
         text-transform: uppercase;
         font-size: rem(14);
-        // color: $color;
+        color: $c-082605;
         font-weight: $fw-bold;
         padding: rem(18) rem(40);
         transition: color $td $tf;
         will-change: transform;
         white-space: nowrap;
-        // @media (pointer: fine) {
-        //     &:hover {
-        //         color: $anim-text-color;
-        //         &::before {
-        //             background-color: $anim-color;
-        //         }
-        //     }
-        // }
+        &--yellow {
+            &::before {
+                background-color: $c-FFF3B0;
+            }
+            &::after {
+                background-color: transparent;
+            }
+
+            @media (pointer: fine) {
+                &:hover {
+                    color: $c-082605;
+                    &::before {
+                        background-color: $c-FFFFFF;
+                    }
+                }
+            }
+        }
         &:active {
             scale: 0.99;
         }
@@ -156,12 +192,10 @@
         }
         &::before {
             z-index: 2;
-            // background-color: $background;
             transition: background-color $td $tf 0s;
         }
         &::after {
             z-index: 1;
-            // background-color: $border-color;
             transform: scaleY(1.1) scaleX(1.025) translateX(0.25px);
         }
     }
