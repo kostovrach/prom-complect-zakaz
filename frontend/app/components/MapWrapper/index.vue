@@ -9,16 +9,16 @@
                     center: props.center,
                     zoom: props.zoom,
                 },
-                theme: 'dark',
+                theme: props.theme,
             }"
         >
             <YandexMapDefaultSchemeLayer />
             <YandexMapDefaultFeaturesLayer />
-            <YandexMapControls :settings="{ position: 'right' }">
+            <YandexMapControls v-if="props.controls" :settings="{ position: 'right' }">
                 <YandexMapZoomControl />
                 <YandexMapGeolocationControl />
             </YandexMapControls>
-            <YandexMapControls :settings="{ position: 'left top' }">
+            <YandexMapControls v-if="props.label" :settings="{ position: 'left top' }">
                 <YandexMapOpenMapsButton />
             </YandexMapControls>
             <YandexMapUiMarker
@@ -27,12 +27,12 @@
                 :settings="{
                     onClick: () => (markersIdx === idx ? (markersIdx = null) : (markersIdx = idx)),
                     coordinates: marker.point.coordinates,
-                    color: 'blue',
+                    color: 'green',
                     popup: { show: markersIdx === idx, position: 'bottom right', offset: 10 },
                 }"
             >
                 <template #popup>
-                    <div class="map__marker">
+                    <div class="map__marker" v-if="marker.title">
                         <div class="map__marker-title">
                             {{ marker.title }}
                         </div>
@@ -69,20 +69,26 @@
     const props = withDefaults(
         defineProps<{
             markers: {
-                title: string;
-                subtitle: string | null;
+                title?: string;
+                subtitle?: string | null;
                 point: {
                     coordinates: LngLat;
-                    type: string;
+                    type?: string;
                 };
             }[];
             center?: LngLat;
             zoom?: number;
+            controls?: boolean;
+            label?: boolean;
+            theme?: 'dark' | 'light';
         }>(),
         {
             markers: () => [],
             center: () => [50.18, 53.22],
             zoom: 8,
+            controls: false,
+            label: false,
+            theme: 'light',
         }
     );
 

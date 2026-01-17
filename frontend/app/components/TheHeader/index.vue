@@ -65,9 +65,7 @@
                     >
                         ЗАКАЗАТЬ ЗВОНОК
                     </ButtonPrimary>
-                    <button class="header__burger burger-icon _burger-icon" data-modal="hide-menu">
-                        <span></span>
-                    </button>
+                    <TheHeaderBurger class="header__burger" />
                 </div>
             </div>
         </div>
@@ -99,20 +97,19 @@
     .header {
         $p: &;
         --header-bgcolor: #{$c-accent};
-        $row-gap: rem(32);
+        $row-gap: lineScale(32, 16, 480, 1920);
 
         position: fixed;
         z-index: 4;
         top: 0;
         width: 100%;
-        height: var(--header-height);
         transition:
             translate $td $tf,
             box-shadow $td $tf;
         background-color: $c-main;
 
         &--scroll {
-            box-shadow: 0 1px 15px rgba($c-main, 0.5);
+            box-shadow: 0 1px 15px rgba($c-secondary, 0.5);
             #{$p}__row {
                 padding: rem(8) 0;
             }
@@ -125,19 +122,8 @@
                 }
             }
         }
-        &__row {
-            // height: var(--header-height);
-
-            @at-root body.scroll & {
-                // height: var(--header-scroll-height);
-            }
-        }
 
         &__container {
-            // display: flex;
-            // align-items: center;
-            // justify-content: space-between;
-            // gap: lineScale(32, 16, 480, 1440);
             @include content-container;
         }
 
@@ -189,6 +175,9 @@
             display: flex;
             align-items: center;
             gap: $row-gap;
+            @media (max-width: 1440px) {
+                display: none;
+            }
             &-item {
                 text-transform: uppercase;
                 font-size: rem(14);
@@ -263,6 +252,9 @@
         }
         &__link {
             font-weight: $fw-bold;
+            @media (max-width: 640px) {
+                display: none;
+            }
         }
         &__button {
             @media (max-width: 768px) {

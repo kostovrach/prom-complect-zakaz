@@ -189,7 +189,7 @@
                 &:hover {
                     color: $c-082605;
                     &::before {
-                        background-color: $c-FFFFFF;
+                        background-color: $c-main;
                     }
                 }
             }

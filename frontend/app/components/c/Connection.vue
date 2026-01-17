@@ -1,0 +1,271 @@
+<template>
+    <section v-if="content" class="c-connection">
+        <div class="c-connection__container">
+            <div class="c-connection__decor">
+                <span class="c-connection__decor-title">пром комплект заказ</span>
+            </div>
+            <div class="c-connection__body">
+                <div class="c-connection__titlebox">
+                    <h2 class="c-connection__title">{{ content.title }}</h2>
+                    <div class="c-connection__subtitle" v-html="content.subtitle"></div>
+                </div>
+                <form class="c-connection__form">
+                    <label class="c-connection__form-inputbox" for="c-connection-email">
+                        <span>Электронная почта</span>
+                        <input
+                            v-model="formData.email"
+                            id="c-connection-email"
+                            type="email"
+                            name="c-connection-email"
+                            placeholder="example@yandex.ru"
+                            required
+                            inputmode="email"
+                            @focus="formErrors.email = false"
+                        />
+                        <div v-if="formErrors.email" class="c-connection__info">
+                            <span class="c-connection__info-icon">i</span>
+                            <p class="c-connection__info-text">Поле не может быть пустым</p>
+                        </div>
+                    </label>
+                    <ButtonPrimary
+                        class="c-connection__form-button"
+                        type="button"
+                        button-type="submit"
+                        @click.prevent="submitForm"
+                    >
+                        Отправить 🡭
+                    </ButtonPrimary>
+                    <label class="c-connection__form-agreement" for="c-connection-agreement">
+                        <div class="c-connection__form-agreement-checkbox">
+                            <input
+                                v-model="formData.agreement"
+                                id="c-connection-agreement"
+                                type="checkbox"
+                                name="c-connection-agreement"
+                                required
+                                @input="formErrors.agreement = false"
+                            />
+                            <SvgSprite type="checkmark" :size="14" />
+                        </div>
+                        <p class="c-connection__form-agreement-text">
+                            Согласен(-а) с политикой конфиденциальности и обработкой персональных
+                            данных
+                        </p>
+                        <div v-if="formErrors.agreement" class="c-connection__info">
+                            <span class="c-connection__info-icon">i</span>
+                            <p class="c-connection__info-text">
+                                Без Вашего согласия мы не сможем продолжить
+                            </p>
+                        </div>
+                    </label>
+                </form>
+                <div v-if="formErrors.general.length" class="c-connection__error">
+                    <span class="c-connection__error-icon">!</span>
+                    <div class="c-connection__error-text">{{ formErrors.general }}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
+
+<script setup lang="ts">
+    interface IContent {
+        id: string | number;
+        date_created: string;
+        date_updated: string | null;
+        title: string;
+        subtitle: string | null;
+    }
+
+    const { content } = await useCms<IContent>('c-connection-form');
+
+    const isLoading = ref(false);
+    const isSubmited = ref(false);
+
+    const formData = reactive({
+        email: '',
+        agreement: true,
+    });
+
+    const formErrors = reactive({
+        email: false,
+        agreement: false,
+        general: '',
+    });
+
+    async function submitForm() {
+        const errorFallbackText = 'Ошибка сервера, попробуйте повторить попытку позже';
+
+        formErrors.general = '';
+
+        if (!formData.email.length || !formData.agreement) {
+            if (!formData.email.length) formErrors.email = true;
+            if (!formData.agreement) formErrors.agreement = true;
+            return;
+        }
+
+        isLoading.value = true;
+
+        try {
+            const { success, message } = await $fetch('/api/mail/connection', {
+                method: 'POST',
+                body: { email: formData.email },
+            });
+
+            if (!success) {
+                formErrors.general = message ?? errorFallbackText;
+            }
+
+            formData.email = '';
+            isSubmited.value = true;
+        } catch {
+            formErrors.general = errorFallbackText;
+        } finally {
+            isLoading.value = false;
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    @use '~/assets/scss/abstracts' as *;
+
+    .c-connection {
+        $p: &;
+
+        @include content-block;
+        &__container {
+            display: grid;
+            grid-template-columns: auto 55%;
+            gap: lineScale(64, 32, 480, 1920);
+            @include content-container;
+            @media (max-width: 1024px) {
+                grid-template-columns: 100%;
+            }
+        }
+        &__decor {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            background-color: $c-main;
+            mask-image: url('/img/masks/favicon-mask.svg');
+            mask-size: 100%;
+            mask-position: 100% 100%;
+            mask-repeat: no-repeat;
+            @media (max-width: 1024px) {
+                display: none;
+            }
+            &-title {
+                max-width: 10ch;
+                text-transform: lowercase;
+                font-family: 'Nuniti', sans-serif;
+                color: $c-FFFFFF;
+                font-size: lineScale(35, 20, 480, 1920);
+                padding: rem(32);
+            }
+        }
+        &__body {
+            display: flex;
+            flex-direction: column;
+            gap: lineScale(156, 96, 480, 1920);
+        }
+        &__titlebox {
+            display: flex;
+            flex-direction: column;
+            gap: rem(32);
+        }
+        &__title {
+            font-family: 'Nuniti', sans-serif;
+            text-wrap: balance;
+            font-size: lineScale(64, 32, 480, 1920);
+            font-weight: $fw-bold;
+        }
+        &__subtitle {
+            max-width: 65ch;
+            @include text-content(
+                $font-size: lineScale(18, 16, 480, 1920),
+                $h2-size: lineScale(24, 20, 480, 1920),
+                $h-size: lineScale(20, 18, 480, 1920)
+            );
+        }
+        &__form {
+            max-width: rem(740);
+            display: grid;
+            grid-template-columns: auto min-content;
+            grid-template-areas:
+                'input button'
+                'agreement agreement';
+            gap: rem(16) rem(32);
+            @media (max-width: 680px) {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: rem(32);
+            }
+            &-inputbox {
+                grid-area: input;
+                width: 100%;
+                @include inputbox;
+            }
+            &-button {
+                grid-area: button;
+                @media (max-width: 680px) {
+                    width: 100%;
+                }
+            }
+            &-agreement {
+                grid-area: agreement;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: rem(8);
+                &-checkbox {
+                    position: relative;
+                    width: rem(24);
+                    min-width: rem(24);
+                    max-width: rem(24);
+                    aspect-ratio: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    &::before {
+                        content: '[';
+                    }
+                    &::after {
+                        content: ']';
+                    }
+                    &::before,
+                    &::after {
+                        font-size: rem(18);
+                    }
+                    > input {
+                        position: absolute;
+                        inset: 0;
+                    }
+                }
+                &-icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    translate: -50% -46%;
+                    #{$p}__form-agreement-checkbox:not(:has(input:checked)) & {
+                        display: none;
+                    }
+                }
+                &-text {
+                    font-size: lineScale(16, 14, 480, 1920);
+                    > a,
+                    button {
+                        cursor: pointer;
+                        text-decoration: underline;
+                        @media (pointer: fine) {
+                            &:hover {
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

@@ -9,6 +9,21 @@
                 })) ?? []
             "
         />
+        <PHomeAdvant
+            :title="content?.advant_title ?? ''"
+            :subtitle="content?.advant_subtitle ?? null"
+            :cards="content?.advant_cards ?? []"
+        />
+        <PHomeServices
+            :title="content?.services_title ?? ''"
+            :subtitle="content?.services_subtitle ?? null"
+        />
+        <CPartners />
+        <CCo />
+        <CNews />
+        <CFaq />
+        <CPoints />
+        <CConnection />
     </NuxtLayout>
 </template>
 
@@ -30,6 +45,16 @@
                 file: IDirectusFile;
             };
         }[];
+
+        advant_title: string;
+        advant_subtitle: string | null;
+        advant_cards: {
+            title: string;
+            content: string;
+        }[];
+
+        services_title: string;
+        services_subtitle: string | null;
     }
 
     const { content } = await useCms<IPage>('home_page', [

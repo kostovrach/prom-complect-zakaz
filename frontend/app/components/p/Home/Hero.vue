@@ -3,7 +3,7 @@
         <div class="home-hero__container">
             <div class="home-hero__nav">
                 <LinkPrimary
-                    v-for="service in services"
+                    v-for="service in services.slice(0, 5)"
                     :key="service.id"
                     class="home-hero__nav-item"
                     :icon-size="16"

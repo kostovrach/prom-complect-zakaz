@@ -1,12 +1,24 @@
 <template>
-    <button class="burger">
+    <button class="burger" type="button" @click="openMenu">
         <span></span>
         <span></span>
         <span></span>
     </button>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import { ModalsSideMenu } from '#components';
+    import { useModal } from 'vue-final-modal';
+
+    const { open: openMenu, close: _closeMenu } = useModal({
+        component: ModalsSideMenu,
+        attrs: {
+            onClose() {
+                _closeMenu();
+            },
+        },
+    });
+</script>
 
 <style scoped lang="scss">
     @use '~/assets/scss/abstracts' as *;
@@ -26,10 +38,12 @@
         align-items: center;
         justify-content: center;
         gap: rem(6);
-        // background-color: rgba($c-DFDFDF, 0.5);
         backdrop-filter: blur(5px);
         border-radius: $border-radius;
         transition: background-color $td $tf;
+        @media (min-width: 1441px) {
+            display: none;
+        }
         > span {
             width: calc($width / 2);
             background-color: $c-secondary;

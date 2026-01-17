@@ -6,9 +6,7 @@
     >
         <div class="modal-privacy">
             <div class="modal-privacy__container">
-                <button class="modal-privacy__button" type="button" @click="emit('close')">
-                    <SvgSprite type="cross" :size="32" />
-                </button>
+                <ButtonCross class="modal-privacy__close" @click="emit('close')" />
                 <div class="modal-privacy__titlebox">
                     <h1 class="modal-privacy__title">{{ props.title }}</h1>
                     <span v-if="props.dateUpdated" class="modal-privacy__tag">
@@ -76,14 +74,16 @@
         height: 100lvh;
         overflow-y: auto;
         color: $c-FFFFFF;
-        // background-color: $c-secondary;
+        background-color: $c-accent;
         @include hide-scrollbar;
         &__container {
             display: flex;
             flex-direction: column;
-            padding: rem(32);
+            font-family: 'Nuniti', sans-serif;
+            padding: rem(32) lineScale(32, 16, 480, 1920) rem(128);
         }
-        &__button {
+        &__close {
+            cursor: pointer;
             align-self: flex-end;
         }
         &__titlebox {
@@ -98,7 +98,7 @@
         }
         &__tag {
             font-size: lineScale(16, 14, 480, 1440);
-            color: $c-accent;
+            color: $c-FFF3B0;
         }
         &__body {
             margin-top: rem(64);
@@ -117,7 +117,7 @@
             h5,
             h6 {
                 font-size: rem(16);
-                // font-weight: $fw-bold;
+                font-weight: $fw-bold;
                 margin: rem(24) 0 rem(8);
             }
 
@@ -126,7 +126,7 @@
                 line-height: 1.3;
                 margin: rem(16) 0 rem(8);
                 > a {
-                    color: $c-accent;
+                    color: $c-FFF3B0;
                     text-decoration: underline;
                     @media (pointer: fine) {
                         &:hover {

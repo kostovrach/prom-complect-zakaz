@@ -1,5 +1,13 @@
 <template>
-    <section :class="['block-layout', `block-layout--${props.layout}`, props.class]">
+    <section
+        :class="[
+            'block-layout',
+            `block-layout--${props.layout}`,
+            { 'block-layout--large': props.large },
+            { 'block-layout--large-body': props.largeBody },
+            props.class,
+        ]"
+    >
         <div :class="['block-layout__container', props.containerClass]">
             <div ref="container" class="block-layout__titlebox">
                 <div
@@ -36,10 +44,12 @@
         defineProps<{
             title: string;
             subtitle?: string | null;
-            layout?: 'vertical' | 'horizontal';
+            layout?: 'vertical' | 'horizontal' | 'horizontal-reverse';
             class?: string | Record<string, any>;
             containerClass?: string | Record<string, any>;
             alignment?: 'center' | 'left';
+            large?: boolean;
+            largeBody?: boolean;
         }>(),
         {
             title: '',
@@ -48,6 +58,8 @@
             class: '',
             containerClass: '',
             alignment: 'center',
+            large: false,
+            largeBody: false,
         }
     );
 
@@ -92,15 +104,41 @@
             @include content-container;
             @at-root #{$p}--horizontal & {
                 display: grid;
-                grid-template-columns: 40% auto;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas: 'titlebox content';
                 gap: rem(48);
                 @media (max-width: 1024px) {
                     grid-template-columns: 100%;
+                    grid-template-areas:
+                        'titlebox'
+                        'content';
+                }
+            }
+            @at-root #{$p}--horizontal-reverse & {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas: 'content titlebox';
+                gap: rem(48);
+                @media (max-width: 1024px) {
+                    grid-template-columns: 100%;
+                    grid-template-areas:
+                        'titlebox'
+                        'content';
+                }
+            }
+            @at-root #{$p}--large-body & {
+                grid-template-columns: auto 55%;
+                @media (max-width: 1024px) {
+                    grid-template-columns: 100%;
+                    grid-template-areas:
+                        'titlebox'
+                        'content';
                 }
             }
         }
 
         &__titlebox {
+            grid-area: titlebox;
             @at-root #{$p}--horizontal & {
                 position: relative;
                 height: 100%;
@@ -116,6 +154,14 @@
             }
         }
         &__title {
+            font-family: 'Nuniti', sans-serif;
+            text-transform: uppercase;
+            font-weight: $fw-bold;
+            font-size: lineScale(44, 30, 480, 1920);
+            max-width: 35ch;
+            @at-root #{$p}--large & {
+                font-size: lineScale(80, 40, 480, 1920);
+            }
             > span {
                 color: transparent;
                 background-image: linear-gradient(90deg, $c-1C3A19 50%, $c-secondary 50%);
@@ -127,6 +173,12 @@
             }
         }
         &__subtitle {
+            max-width: 60ch;
+            line-height: 1.4;
+            font-weight: $fw-semi;
+        }
+        &__content {
+            grid-area: content;
         }
     }
 </style>

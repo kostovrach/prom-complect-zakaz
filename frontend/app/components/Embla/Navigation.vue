@@ -113,7 +113,7 @@
             &:disabled {
                 opacity: 0.5;
                 pointer-events: none;
-            } 
+            }
             &--prev {
                 transform: scaleX(-1);
             }
