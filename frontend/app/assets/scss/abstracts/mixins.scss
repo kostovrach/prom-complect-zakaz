@@ -486,7 +486,17 @@
         gap: rem(16);
     }
     &__agreement {
+        position: relative;
         @include agreement;
+    }
+    &__loading {
+        position: absolute;
+        z-index: 5;
+        inset: 0;
+        background-color: rgba($c-accent, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 

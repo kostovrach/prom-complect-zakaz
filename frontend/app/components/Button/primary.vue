@@ -213,6 +213,25 @@
                 }
             }
         }
+        &--gray {
+            padding: rem(12) rem(40);
+            color: $c-secondary;
+            &::before {
+                background-color: $c-D9D9D9;
+            }
+            &::after {
+                background-color: transparent;
+            }
+
+            @media (pointer: fine) {
+                &:hover {
+                    color: $c-FFFFFF;
+                    &::before {
+                        background-color: $c-accent;
+                    }
+                }
+            }
+        }
         &--compact {
             padding: rem(10) rem(48);
             font-size: rem(12);

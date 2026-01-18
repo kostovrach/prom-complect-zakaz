@@ -10,6 +10,9 @@
                     <div class="c-connection__subtitle" v-html="content.subtitle"></div>
                 </div>
                 <form class="c-connection__form">
+                    <div v-if="isLoading" class="c-connection__loading">
+                        <LoadSpinner theme="dark" />
+                    </div>
                     <label class="c-connection__form-inputbox" for="c-connection-email">
                         <span>Электронная почта</span>
                         <input
@@ -22,15 +25,19 @@
                             inputmode="email"
                             @focus="formErrors.email = false"
                         />
-                        <div v-if="formErrors.email" class="c-connection__info">
-                            <span class="c-connection__info-icon">i</span>
-                            <p class="c-connection__info-text">Поле не может быть пустым</p>
-                        </div>
+                        <FormNotifyInfo
+                            v-if="formErrors.email"
+                            :position="{ top: '105%', left: '15%' }"
+                        >
+                            Поле не может быть пустым
+                        </FormNotifyInfo>
                     </label>
                     <ButtonPrimary
                         class="c-connection__form-button"
                         type="button"
                         button-type="submit"
+                        theme="gray"
+                        :overlay-size="0"
                         @click.prevent="submitForm"
                     >
                         Отправить 🡭
@@ -45,24 +52,31 @@
                                 required
                                 @input="formErrors.agreement = false"
                             />
-                            <SvgSprite type="checkmark" :size="14" />
+                            <span class="c-connection__form-agreement-icon">
+                                <SvgSprite type="checkmark" :size="14" />
+                            </span>
                         </div>
                         <p class="c-connection__form-agreement-text">
                             Согласен(-а) с политикой конфиденциальности и обработкой персональных
                             данных
                         </p>
-                        <div v-if="formErrors.agreement" class="c-connection__info">
-                            <span class="c-connection__info-icon">i</span>
-                            <p class="c-connection__info-text">
-                                Без Вашего согласия мы не сможем продолжить
-                            </p>
-                        </div>
+                        <FormNotifyInfo
+                            v-if="formErrors.agreement"
+                            :position="{ top: '125%', left: '-4.5%' }"
+                        >
+                            Без Вашего согласия мы не сможем продолжить
+                        </FormNotifyInfo>
                     </label>
                 </form>
-                <div v-if="formErrors.general.length" class="c-connection__error">
-                    <span class="c-connection__error-icon">!</span>
-                    <div class="c-connection__error-text">{{ formErrors.general }}</div>
-                </div>
+                <FormNotifyError v-if="formErrors.general.length" class="c-connection__notify">
+                    {{ formErrors.general }}
+                </FormNotifyError>
+                <FormNotifySuccess v-if="isSubmited" class="c-connection__notify">
+                    <ul>
+                        <li>Спасибо за заявку!</li>
+                        <li>Наши менеджеры свяжутся с вами в бижайшее время.</li>
+                    </ul>
+                </FormNotifySuccess>
             </div>
         </div>
     </section>
@@ -77,7 +91,7 @@
         subtitle: string | null;
     }
 
-    const { content } = await useCms<IContent>('c-connection-form');
+    const { content } = await useCms<IContent>('contact_form');
 
     const isLoading = ref(false);
     const isSubmited = ref(false);
@@ -97,6 +111,7 @@
         const errorFallbackText = 'Ошибка сервера, попробуйте повторить попытку позже';
 
         formErrors.general = '';
+        isSubmited.value = false;
 
         if (!formData.email.length || !formData.agreement) {
             if (!formData.email.length) formErrors.email = true;
@@ -106,18 +121,22 @@
 
         isLoading.value = true;
 
+        const formDataToSend = new FormData();
+        formDataToSend.append('subject', 'Подписка на информационную рассылку');
+        formDataToSend.append('email', formData.email);
+
         try {
-            const { success, message } = await $fetch('/api/mail/connection', {
+            const { success, message } = await $fetch('/api/mail/request', {
                 method: 'POST',
-                body: { email: formData.email },
+                body: formDataToSend,
             });
 
             if (!success) {
                 formErrors.general = message ?? errorFallbackText;
+            } else {
+                formData.email = '';
+                isSubmited.value = true;
             }
-
-            formData.email = '';
-            isSubmited.value = true;
         } catch {
             formErrors.general = errorFallbackText;
         } finally {
@@ -147,7 +166,7 @@
             height: 100%;
             display: flex;
             align-items: flex-end;
-            background-color: $c-main;
+            background-color: $c-accent;
             mask-image: url('/img/masks/favicon-mask.svg');
             mask-size: 100%;
             mask-position: 100% 100%;
@@ -163,11 +182,6 @@
                 font-size: lineScale(35, 20, 480, 1920);
                 padding: rem(32);
             }
-        }
-        &__body {
-            display: flex;
-            flex-direction: column;
-            gap: lineScale(156, 96, 480, 1920);
         }
         &__titlebox {
             display: flex;
@@ -188,7 +202,20 @@
                 $h-size: lineScale(20, 18, 480, 1920)
             );
         }
+        &__notify {
+            margin-top: rem(16);
+        }
+        &__loading {
+            position: absolute;
+            z-index: 5;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba($c-main, 0.5);
+        }
         &__form {
+            position: relative;
             max-width: rem(740);
             display: grid;
             grid-template-columns: auto min-content;
@@ -196,6 +223,7 @@
                 'input button'
                 'agreement agreement';
             gap: rem(16) rem(32);
+            margin-top: lineScale(156, 96, 480, 1920);
             @media (max-width: 680px) {
                 display: flex;
                 flex-direction: column;
@@ -204,6 +232,7 @@
             }
             &-inputbox {
                 grid-area: input;
+                position: relative;
                 width: 100%;
                 @include inputbox;
             }
@@ -215,11 +244,13 @@
             }
             &-agreement {
                 grid-area: agreement;
+                position: relative;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: rem(8);
                 &-checkbox {
+                    cursor: pointer;
                     position: relative;
                     width: rem(24);
                     min-width: rem(24);
@@ -239,6 +270,7 @@
                         font-size: rem(18);
                     }
                     > input {
+                        cursor: pointer;
                         position: absolute;
                         inset: 0;
                     }
