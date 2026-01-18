@@ -1232,6 +1232,19 @@ ALTER SEQUENCE public.points_points_markers_id_seq OWNED BY public.points_points
 
 
 --
+-- Name: quiz_page; Type: TABLE; Schema: public; Owner: directus
+--
+
+CREATE TABLE public.quiz_page (
+    id uuid NOT NULL,
+    date_created timestamp with time zone,
+    date_updated timestamp with time zone
+);
+
+
+ALTER TABLE public.quiz_page OWNER TO directus;
+
+--
 -- Name: services; Type: TABLE; Schema: public; Owner: directus
 --
 
@@ -1532,6 +1545,7 @@ COPY public.co (id, date_created, date_updated, title, subtitle, description, ma
 --
 
 COPY public.contact (id, date_created, date_updated, copyright, legal_info, phone, email, vk, tg, ok, address, address_description, map_link) FROM stdin;
+6a284cb2-9f17-4dae-b367-e8663b2f00b9	2026-01-18 20:39:16.923+00	\N	Группа компаний 2025«3А» © Все права защищены	<ul>\n<li>ИНН 233612738713</li>\n<li>ОГРН 13156461231874987</li>\n</ul>	+7 (777) 777-77-77	example@gmail.com	https://example.com	https://example.com	https://example.com	г. Самара, ул. Конноармейская, 17	Время работы головного офиса: ПН-ПТ: 10:00 - 19:00, СБ-ВС: 12:00 - 18:00	https://example.com
 \.
 
 
@@ -1540,6 +1554,7 @@ COPY public.contact (id, date_created, date_updated, copyright, legal_info, phon
 --
 
 COPY public.contact_contact_map (id, contact_id, contact_map_id) FROM stdin;
+1	6a284cb2-9f17-4dae-b367-e8663b2f00b9	a0fefb39-2d8e-43d3-8b9b-ab508c01fb1b
 \.
 
 
@@ -1557,6 +1572,7 @@ COPY public.contact_form (id, date_created, date_updated, title, subtitle) FROM 
 --
 
 COPY public.contact_map (id, date_created, date_updated, point, title, subtitle) FROM stdin;
+a0fefb39-2d8e-43d3-8b9b-ab508c01fb1b	2026-01-18 20:39:16.93+00	\N	0101000020E610000054D5746E830D4940804B01C5D9974A40	Метка 1	Описание метки 1
 \.
 
 
@@ -2448,6 +2464,29 @@ COPY public.directus_activity (id, action, "user", "timestamp", ip, user_agent, 
 870	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 14:17:55.086+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	contact_map	http://localhost:8055
 871	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 14:17:55.093+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	content	http://localhost:8055
 872	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 14:17:55.099+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	chunks	http://localhost:8055
+873	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.524+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_permissions	24	http://localhost:8055
+874	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.542+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_permissions	25	http://localhost:8055
+875	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.548+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_permissions	26	http://localhost:8055
+876	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.553+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_policies	7a111883-0504-42cf-a632-eca505befeb4	http://localhost:8055
+877	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.563+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_access	cdd28041-a05a-447f-8dd2-210c72aaeea9	http://localhost:8055
+878	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:36:17.572+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_users	d4295245-40c0-42d4-a8ab-bc53814683de	http://localhost:8055
+879	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:39:16.943+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	contact_map	a0fefb39-2d8e-43d3-8b9b-ab508c01fb1b	http://localhost:8055
+880	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:39:16.957+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	contact_contact_map	1	http://localhost:8055
+881	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:39:16.962+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	contact	6a284cb2-9f17-4dae-b367-e8663b2f00b9	http://localhost:8055
+882	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:35:34.799+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_fields	154	http://localhost:8055
+883	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:35:34.809+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_fields	155	http://localhost:8055
+884	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:35:34.815+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_fields	156	http://localhost:8055
+885	create	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:35:34.824+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	quiz_page	http://localhost:8055
+886	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:13.123+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	quiz_page	http://localhost:8055
+887	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.178+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	home_page	http://localhost:8055
+888	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.19+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	quiz_page	http://localhost:8055
+889	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.267+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	services	http://localhost:8055
+890	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.288+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	articles	http://localhost:8055
+891	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.298+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	docs	http://localhost:8055
+892	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.309+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	contact	http://localhost:8055
+893	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.322+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	contact_map	http://localhost:8055
+894	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.333+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	content	http://localhost:8055
+895	update	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 21:36:20.344+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	directus_collections	chunks	http://localhost:8055
 \.
 
 
@@ -2463,23 +2502,24 @@ services_docs	\N	\N	{{file.$thumbnail}}  |  {{title}}	t	f	\N	\N	t	\N	\N	\N	all	\
 services_services_docs	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	1	services_docs	open	\N	f
 home_page_home_hero	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	1	home_hero	open	\N	f
 home_hero	\N	\N	{{file.$thumbnail}}  |  {{title}}	t	f	[{"language":"ru-RU","translation":"Хироскрин","singular":"Хироскрин","plural":"Хироскрины"}]	\N	t	\N	\N	\N	all	\N	\N	1	home_page	open	\N	f
+home_page	two_pager	\N	\N	f	t	[{"language":"ru-RU","translation":"Главная страница","singular":"Главная страница","plural":"Главные страницы"}]	\N	t	\N	\N	\N	all	\N	\N	1	content	open	\N	f
+quiz_page	two_pager	\N	\N	f	t	[{"language":"ru-RU","translation":"Страница \\"КВИЗ: подбор оборудования\\"","singular":"Страница \\"КВИЗ: подбор оборудования\\"","plural":"Страницы \\"КВИЗ: подбор оборудования\\""}]	\N	t	\N	\N	\N	all	\N	\N	2	content	open	\N	f
 points_markers	\N	\N	{{image.$thumbnail}}  |  {{title}}	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	1	points	open	\N	f
+services	precision_manufacturing	\N	\N	f	f	[{"language":"ru-RU","translation":"Оборудование","singular":"Оборудование","plural":"Оборудование"}]	\N	t	\N	\N	\N	all	\N	\N	1	\N	open	\N	f
 partners	dashboard_customize	\N	\N	f	t	[{"language":"ru-RU","translation":"Слайдер \\"Партнеры\\"","singular":"Слайдер \\"Партнеры\\"","plural":"Слайдеры \\"Партнеры\\""}]	\N	t	\N	\N	\N	all	\N	\N	1	chunks	open	\N	f
 partners_files	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	2	chunks	open	\N	f
 co	dashboard_customize	\N	\N	f	t	[{"language":"ru-RU","translation":"Блок \\"Сотрудничество\\"","singular":"Блок \\"Сотрудничество\\"","plural":"Блоки \\"Сотрудничество\\""}]	\N	t	\N	\N	\N	all	\N	\N	3	chunks	open	\N	f
 faq	dashboard_customize	\N	\N	f	t	[{"language":"ru-RU","translation":"Блок \\"Частые вопросы\\"","singular":"Блок \\"Частые вопросы\\"","plural":"Блоки \\"Частые вопросы\\""}]	\N	t	\N	\N	\N	all	\N	\N	4	chunks	open	\N	f
 points	dashboard_customize	\N	\N	f	t	[{"language":"ru-RU","translation":"Блок точек с видео","singular":"Блок точек с видео","plural":"Блоки точек с видео"}]	\N	t	\N	\N	\N	all	\N	\N	5	chunks	open	\N	f
 contact_form	dashboard_customize	\N	\N	f	t	[{"language":"ru-RU","translation":"Форма обратной связи","singular":"Форма обратной связи","plural":"Формы обратной связи"}]	\N	t	\N	\N	\N	all	\N	\N	6	chunks	open	\N	f
-contact_contact_map	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	1	contact_map	open	\N	f
-services	precision_manufacturing	\N	\N	f	f	[{"language":"ru-RU","translation":"Оборудование","singular":"Оборудование","plural":"Оборудование"}]	\N	t	\N	\N	\N	all	\N	\N	1	\N	open	\N	f
 articles	article	\N	{{cover.$thumbnail}}  |  {{title}}	f	f	[{"language":"ru-RU","translation":"Статьи","singular":"Статья","plural":"Статьи"}]	\N	t	\N	\N	\N	all	\N	\N	2	\N	open	\N	f
 docs	privacy_tip	\N	\N	f	f	[{"language":"ru-RU","translation":"Документы","singular":"Документ","plural":"Документы"}]	\N	t	\N	\N	\N	all	\N	\N	3	\N	open	\N	f
-home_page	two_pager	\N	\N	f	t	[{"language":"ru-RU","translation":"Главная страница","singular":"Главная страница","plural":"Главные страницы"}]	\N	t	\N	\N	\N	all	\N	\N	1	content	open	\N	f
-points_points_markers	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	2	points	open	\N	f
 contact	globe_location_pin	\N	\N	f	t	[{"language":"ru-RU","translation":"Контактная информация","singular":"Контактная информация","plural":"Контактная информация"}]	\N	t	\N	\N	\N	all	\N	\N	4	\N	open	\N	f
 contact_map	\N	\N	{{title}}  |  {{subtitle}}	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	5	\N	open	\N	f
+contact_contact_map	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	1	contact_map	open	\N	f
 content	folder	\N	\N	f	f	[{"language":"ru-RU","translation":"Страницы"}]	\N	t	\N	\N	\N	all	\N	\N	6	\N	open	\N	f
 chunks	folder	\N	\N	f	f	[{"language":"ru-RU","translation":"Компоненты"}]	\N	t	\N	\N	\N	all	\N	\N	7	\N	open	\N	f
+points_points_markers	import_export	\N	\N	t	f	\N	\N	t	\N	\N	\N	all	\N	\N	2	points	open	\N	f
 \.
 
 
@@ -2643,6 +2683,9 @@ COPY public.directus_fields (id, collection, field, special, interface, options,
 131	contact	legal_info	\N	input-rich-text-html	{"toolbar":["bold","italic","underline","subscript","superscript","bullist","customLink","fullscreen"]}	formatted-value	\N	f	f	2	full	[{"language":"ru-RU","translation":"Правовая информация"}]	Например, ИНН/ОГРН или т.п.	\N	f	info	\N	\N
 143	contact_map	date_created	date-created	datetime	\N	datetime	{"relative":true}	t	t	2	half	\N	\N	\N	f	\N	\N	\N
 153	contact	map_link	\N	input	{"iconLeft":"add_link"}	formatted-value	\N	f	f	4	full	[{"language":"ru-RU","translation":"Ссылка на организацию в картах"}]	\N	\N	f	location	\N	\N
+154	quiz_page	id	uuid	input	\N	\N	\N	t	t	1	full	\N	\N	\N	f	\N	\N	\N
+155	quiz_page	date_created	date-created	datetime	\N	datetime	{"relative":true}	t	t	2	half	\N	\N	\N	f	\N	\N	\N
+156	quiz_page	date_updated	date-updated	datetime	\N	datetime	{"relative":true}	t	t	3	half	\N	\N	\N	f	\N	\N	\N
 144	contact_map	date_updated	date-updated	datetime	\N	datetime	{"relative":true}	t	t	3	half	\N	\N	\N	f	\N	\N	\N
 146	contact_map	title	\N	input	{"iconLeft":"title"}	formatted-value	\N	f	f	4	full	[{"language":"ru-RU","translation":"Заголовок метки"}]	\N	\N	f	\N	\N	\N
 132	contact	phone	\N	input	{"iconLeft":"phone_enabled"}	formatted-value	\N	f	f	1	half	[{"language":"ru-RU","translation":"Номер телефона"}]	\N	\N	f	contacts	\N	\N
@@ -2846,6 +2889,9 @@ COPY public.directus_permissions (id, collection, action, permissions, validatio
 21	points_markers	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
 22	points_points_markers	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
 23	contact_form	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
+24	contact_map	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
+25	contact_contact_map	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
+26	contact	read	\N	\N	\N	*	7a111883-0504-42cf-a632-eca505befeb4
 \.
 
 
@@ -3758,6 +3804,27 @@ COPY public.directus_revisions (id, activity, collection, item, data, delta, par
 848	870	directus_collections	contact_map	{"collection":"contact_map","icon":null,"note":null,"display_template":"{{title}}  |  {{subtitle}}","hidden":true,"singleton":false,"translations":null,"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":5,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":5,"group":null}	\N	\N
 849	871	directus_collections	content	{"collection":"content","icon":"folder","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Страницы"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":6,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":6,"group":null}	\N	\N
 850	872	directus_collections	chunks	{"collection":"chunks","icon":"folder","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Компоненты"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":7,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":7,"group":null}	\N	\N
+851	873	directus_permissions	24	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact_map","action":"read"}	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact_map","action":"read"}	\N	\N
+852	874	directus_permissions	25	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact_contact_map","action":"read"}	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact_contact_map","action":"read"}	\N	\N
+853	875	directus_permissions	26	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact","action":"read"}	{"policy":"7a111883-0504-42cf-a632-eca505befeb4","permissions":null,"validation":null,"fields":["*"],"presets":null,"collection":"contact","action":"read"}	\N	\N
+854	877	directus_access	cdd28041-a05a-447f-8dd2-210c72aaeea9	{"id":"cdd28041-a05a-447f-8dd2-210c72aaeea9","role":null,"user":"d4295245-40c0-42d4-a8ab-bc53814683de","policy":"7a111883-0504-42cf-a632-eca505befeb4","sort":1}	{"policy":"7a111883-0504-42cf-a632-eca505befeb4"}	\N	\N
+855	879	contact_map	a0fefb39-2d8e-43d3-8b9b-ab508c01fb1b	{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}}	{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}}	856	\N
+856	880	contact_contact_map	1	{"contact_map_id":{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}},"contact_id":"6a284cb2-9f17-4dae-b367-e8663b2f00b9"}	{"contact_map_id":{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}},"contact_id":"6a284cb2-9f17-4dae-b367-e8663b2f00b9"}	857	\N
+869	893	directus_collections	contact_map	{"collection":"contact_map","icon":null,"note":null,"display_template":"{{title}}  |  {{subtitle}}","hidden":true,"singleton":false,"translations":null,"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":5,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":5,"group":null}	\N	\N
+870	894	directus_collections	content	{"collection":"content","icon":"folder","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Страницы"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":6,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":6,"group":null}	\N	\N
+857	881	contact	6a284cb2-9f17-4dae-b367-e8663b2f00b9	{"copyright":"Группа компаний 2025«3А» © Все права защищены","legal_info":"<ul>\\n<li>ИНН 233612738713</li>\\n<li>ОГРН 13156461231874987</li>\\n</ul>","phone":"+7 (777) 777-77-77","email":"example@gmail.com","vk":"https://example.com","tg":"https://example.com","ok":"https://example.com","address":"г. Самара, ул. Конноармейская, 17","address_description":"Время работы головного офиса: ПН-ПТ: 10:00 - 19:00, СБ-ВС: 12:00 - 18:00","map_points":{"create":[{"contact_map_id":{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}}}],"update":[],"delete":[]},"map_link":"https://example.com"}	{"copyright":"Группа компаний 2025«3А» © Все права защищены","legal_info":"<ul>\\n<li>ИНН 233612738713</li>\\n<li>ОГРН 13156461231874987</li>\\n</ul>","phone":"+7 (777) 777-77-77","email":"example@gmail.com","vk":"https://example.com","tg":"https://example.com","ok":"https://example.com","address":"г. Самара, ул. Конноармейская, 17","address_description":"Время работы головного офиса: ПН-ПТ: 10:00 - 19:00, СБ-ВС: 12:00 - 18:00","map_points":{"create":[{"contact_map_id":{"title":"Метка 1","subtitle":"Описание метки 1","point":{"coordinates":[50.10557347016098,53.18633329928616],"type":"Point"}}}],"update":[],"delete":[]},"map_link":"https://example.com"}	\N	\N
+858	882	directus_fields	154	{"sort":1,"hidden":true,"readonly":true,"interface":"input","special":["uuid"],"field":"id","collection":"quiz_page"}	{"sort":1,"hidden":true,"readonly":true,"interface":"input","special":["uuid"],"field":"id","collection":"quiz_page"}	\N	\N
+859	883	directus_fields	155	{"sort":2,"special":["date-created"],"interface":"datetime","readonly":true,"hidden":true,"width":"half","display":"datetime","display_options":{"relative":true},"field":"date_created","collection":"quiz_page"}	{"sort":2,"special":["date-created"],"interface":"datetime","readonly":true,"hidden":true,"width":"half","display":"datetime","display_options":{"relative":true},"field":"date_created","collection":"quiz_page"}	\N	\N
+860	884	directus_fields	156	{"sort":3,"special":["date-updated"],"interface":"datetime","readonly":true,"hidden":true,"width":"half","display":"datetime","display_options":{"relative":true},"field":"date_updated","collection":"quiz_page"}	{"sort":3,"special":["date-updated"],"interface":"datetime","readonly":true,"hidden":true,"width":"half","display":"datetime","display_options":{"relative":true},"field":"date_updated","collection":"quiz_page"}	\N	\N
+861	885	directus_collections	quiz_page	{"singleton":true,"collection":"quiz_page"}	{"singleton":true,"collection":"quiz_page"}	\N	\N
+862	886	directus_collections	quiz_page	{"collection":"quiz_page","icon":"two_pager","note":null,"display_template":null,"hidden":false,"singleton":true,"translations":[{"language":"ru-RU","translation":"Страница \\"КВИЗ: подбор оборудования\\"","singular":"Страница \\"КВИЗ: подбор оборудования\\"","plural":"Страницы \\"КВИЗ: подбор оборудования\\""}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":null,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"icon":"two_pager","translations":[{"language":"ru-RU","translation":"Страница \\"КВИЗ: подбор оборудования\\"","singular":"Страница \\"КВИЗ: подбор оборудования\\"","plural":"Страницы \\"КВИЗ: подбор оборудования\\""}]}	\N	\N
+863	887	directus_collections	home_page	{"collection":"home_page","icon":"two_pager","note":null,"display_template":null,"hidden":false,"singleton":true,"translations":[{"language":"ru-RU","translation":"Главная страница","singular":"Главная страница","plural":"Главные страницы"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":1,"group":"content","collapse":"open","preview_url":null,"versioning":false}	{"sort":1,"group":"content"}	\N	\N
+864	888	directus_collections	quiz_page	{"collection":"quiz_page","icon":"two_pager","note":null,"display_template":null,"hidden":false,"singleton":true,"translations":[{"language":"ru-RU","translation":"Страница \\"КВИЗ: подбор оборудования\\"","singular":"Страница \\"КВИЗ: подбор оборудования\\"","plural":"Страницы \\"КВИЗ: подбор оборудования\\""}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":2,"group":"content","collapse":"open","preview_url":null,"versioning":false}	{"sort":2,"group":"content"}	\N	\N
+865	889	directus_collections	services	{"collection":"services","icon":"precision_manufacturing","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Оборудование","singular":"Оборудование","plural":"Оборудование"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":1,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":1,"group":null}	\N	\N
+866	890	directus_collections	articles	{"collection":"articles","icon":"article","note":null,"display_template":"{{cover.$thumbnail}}  |  {{title}}","hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Статьи","singular":"Статья","plural":"Статьи"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":2,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":2,"group":null}	\N	\N
+867	891	directus_collections	docs	{"collection":"docs","icon":"privacy_tip","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Документы","singular":"Документ","plural":"Документы"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":3,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":3,"group":null}	\N	\N
+868	892	directus_collections	contact	{"collection":"contact","icon":"globe_location_pin","note":null,"display_template":null,"hidden":false,"singleton":true,"translations":[{"language":"ru-RU","translation":"Контактная информация","singular":"Контактная информация","plural":"Контактная информация"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":4,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":4,"group":null}	\N	\N
+871	895	directus_collections	chunks	{"collection":"chunks","icon":"folder","note":null,"display_template":null,"hidden":false,"singleton":false,"translations":[{"language":"ru-RU","translation":"Компоненты"}],"archive_field":null,"archive_app_filter":true,"archive_value":null,"unarchive_value":null,"sort_field":null,"accountability":"all","color":null,"item_duplication_fields":null,"sort":7,"group":null,"collapse":"open","preview_url":null,"versioning":false}	{"sort":7,"group":null}	\N	\N
 \.
 
 
@@ -3776,8 +3843,8 @@ COPY public.directus_roles (id, name, icon, description, parent) FROM stdin;
 
 COPY public.directus_sessions (token, "user", expires, ip, user_agent, share, origin, next_token) FROM stdin;
 qGhK8MprsoGESY0_rU78Sn7v0IdtpJ4JASWkekcyKB8Qir5TYbgLrHunC7OuuBQ9	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-23 07:48:36.32+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition std-2)	\N	http://localhost:8055	\N
-XxgQFOhWeq3OKvh5mb9pLDT91-WSk7drHDaxrlWPYvICzEepfZy6OELXDE83j9ZF	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 09:40:14.387+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	\N	http://localhost:8055	CzWSosXUmYTZfW7offRNAu_kIMfEixcMe4dy6cLsVCGkW6mKK5XE9vrIuoNxOjww
-CzWSosXUmYTZfW7offRNAu_kIMfEixcMe4dy6cLsVCGkW6mKK5XE9vrIuoNxOjww	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-19 09:40:04.387+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	\N	http://localhost:8055	\N
+CzWSosXUmYTZfW7offRNAu_kIMfEixcMe4dy6cLsVCGkW6mKK5XE9vrIuoNxOjww	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-18 20:28:28.793+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	\N	http://localhost:8055	JpDyqn1eiZnLNKzQn2qT2N-Zpnyx94WaOafs_agjvBcL9krF_hkFeDVuVurBek-Z
+JpDyqn1eiZnLNKzQn2qT2N-Zpnyx94WaOafs_agjvBcL9krF_hkFeDVuVurBek-Z	77886b68-dd80-4e99-825c-6c747cad7e16	2026-01-19 20:28:18.793+00	172.18.0.1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0 (Edition Yx GX 03)	\N	http://localhost:8055	\N
 \.
 
 
@@ -3812,7 +3879,7 @@ COPY public.directus_translations (id, language, key, value) FROM stdin;
 
 COPY public.directus_users (id, first_name, last_name, email, password, location, title, description, tags, avatar, language, tfa_secret, status, role, token, last_access, last_page, provider, external_identifier, auth_data, email_notifications, appearance, theme_dark, theme_light, theme_light_overrides, theme_dark_overrides, text_direction) FROM stdin;
 d4295245-40c0-42d4-a8ab-bc53814683de	frontend	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	active	\N	pXigLqp37qP0zo67TGZCIDQEhVOmU6NQ	\N	\N	default	\N	\N	t	\N	\N	\N	\N	\N	auto
-77886b68-dd80-4e99-825c-6c747cad7e16	Kulagin-Studio	\N	theplace2024@yandex.ru	$argon2id$v=19$m=65536,t=3,p=4$TkZnwy98cdN5gxkQkzAQqA$/5dxiCkQ7tCOf7ckA0saGVur2EJQk2cpMFZAZEPBDWY	\N	\N	\N	\N	eff7d61a-70b5-4056-9980-108f0827fa25	ru-RU	\N	active	248b16cc-2f00-4d66-8c41-37ace87b3700	\N	2026-01-18 09:40:04.403+00	/content/services	default	\N	\N	t	\N	\N	\N	\N	\N	auto
+77886b68-dd80-4e99-825c-6c747cad7e16	Kulagin-Studio	\N	theplace2024@yandex.ru	$argon2id$v=19$m=65536,t=3,p=4$TkZnwy98cdN5gxkQkzAQqA$/5dxiCkQ7tCOf7ckA0saGVur2EJQk2cpMFZAZEPBDWY	\N	\N	\N	\N	eff7d61a-70b5-4056-9980-108f0827fa25	ru-RU	\N	active	248b16cc-2f00-4d66-8c41-37ace87b3700	\N	2026-01-18 20:28:18.808+00	/content/quiz_page	default	\N	\N	t	\N	\N	\N	\N	\N	auto
 \.
 
 
@@ -3923,6 +3990,14 @@ b8138c72-20dc-4561-8e1b-f391c307174e	2026-01-17 17:59:16.17+00	\N	Элекрот
 
 COPY public.points_points_markers (id, points_id, points_markers_id) FROM stdin;
 1	1c6c47f2-127d-41a5-a09f-f4e4d61eced3	b8138c72-20dc-4561-8e1b-f391c307174e
+\.
+
+
+--
+-- Data for Name: quiz_page; Type: TABLE DATA; Schema: public; Owner: directus
+--
+
+COPY public.quiz_page (id, date_created, date_updated) FROM stdin;
 \.
 
 
@@ -4058,21 +4133,21 @@ COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_col
 -- Name: contact_contact_map_id_seq; Type: SEQUENCE SET; Schema: public; Owner: directus
 --
 
-SELECT pg_catalog.setval('public.contact_contact_map_id_seq', 1, false);
+SELECT pg_catalog.setval('public.contact_contact_map_id_seq', 1, true);
 
 
 --
 -- Name: directus_activity_id_seq; Type: SEQUENCE SET; Schema: public; Owner: directus
 --
 
-SELECT pg_catalog.setval('public.directus_activity_id_seq', 872, true);
+SELECT pg_catalog.setval('public.directus_activity_id_seq', 895, true);
 
 
 --
 -- Name: directus_fields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: directus
 --
 
-SELECT pg_catalog.setval('public.directus_fields_id_seq', 153, true);
+SELECT pg_catalog.setval('public.directus_fields_id_seq', 156, true);
 
 
 --
@@ -4086,7 +4161,7 @@ SELECT pg_catalog.setval('public.directus_notifications_id_seq', 1, false);
 -- Name: directus_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: directus
 --
 
-SELECT pg_catalog.setval('public.directus_permissions_id_seq', 23, true);
+SELECT pg_catalog.setval('public.directus_permissions_id_seq', 26, true);
 
 
 --
@@ -4107,7 +4182,7 @@ SELECT pg_catalog.setval('public.directus_relations_id_seq', 23, true);
 -- Name: directus_revisions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: directus
 --
 
-SELECT pg_catalog.setval('public.directus_revisions_id_seq', 850, true);
+SELECT pg_catalog.setval('public.directus_revisions_id_seq', 871, true);
 
 
 --
@@ -4563,6 +4638,14 @@ ALTER TABLE ONLY public.points
 
 ALTER TABLE ONLY public.points_points_markers
     ADD CONSTRAINT points_points_markers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: quiz_page quiz_page_pkey; Type: CONSTRAINT; Schema: public; Owner: directus
+--
+
+ALTER TABLE ONLY public.quiz_page
+    ADD CONSTRAINT quiz_page_pkey PRIMARY KEY (id);
 
 
 --
