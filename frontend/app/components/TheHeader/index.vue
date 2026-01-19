@@ -1,5 +1,5 @@
 <template>
-    <header :class="['header', { 'header--scroll': scrollY > 16 }]">
+    <header :class="['header', `header--${props.theme}`, { 'header--scroll': scrollY > 16 }]">
         <div class="header__container">
             <div class="header__row">
                 <NuxtLink class="header__logo-container" :to="{ name: 'index' }">
@@ -53,13 +53,18 @@
                     </ButtonRolling>
                 </nav>
                 <div class="header__controls">
-                    <ButtonRolling class="header__link" href="tel:" type="a">
-                        +7 987 654-32-17
+                    <ButtonRolling
+                        v-if="contacts?.phone"
+                        class="header__link"
+                        :href="`tel:${contacts.phone.trim().replace(/\s+/g, '')}`"
+                        type="a"
+                    >
+                        {{ contacts.phone }}
                     </ButtonRolling>
                     <ButtonPrimary
                         class="header__button"
                         type="button"
-                        theme="transparent"
+                        theme="accent"
                         :overlay-size="50"
                         @click="openModalConsultation"
                     >
@@ -75,11 +80,22 @@
 <script setup lang="ts">
     import { ModalsFormConsultation } from '#components';
     import { useModal } from 'vue-final-modal';
+    import type { IContacts } from '~~/interfaces/contacts';
+
+    const props = withDefaults(
+        defineProps<{
+            theme?: 'dark' | 'light';
+        }>(),
+        {
+            theme: 'light',
+        }
+    );
 
     const { y: scrollY } = useWindowScroll();
 
     const servicesStore = useServicesStore();
     const services = computed(() => servicesStore.services);
+    const { content: contacts } = await useCms<IContacts>('contact');
 
     const { open: openModalConsultation, close: _closeModalConsultation } = useModal({
         component: ModalsFormConsultation,
@@ -96,7 +112,6 @@
 
     .header {
         $p: &;
-        --header-bgcolor: #{$c-accent};
         $row-gap: lineScale(32, 16, 480, 1920);
 
         position: fixed;
@@ -122,6 +137,10 @@
                 }
             }
         }
+        &--dark {
+            color: $c-FFFFFF;
+            background-color: $c-accent;
+        }
 
         &__container {
             @include content-container;
@@ -141,6 +160,9 @@
         &__logo {
             color: $c-1C3A19;
             height: rem(32);
+            @at-root #{$p}--dark & {
+                color: $c-FFFFFF;
+            }
             > * {
                 max-height: initial;
             }

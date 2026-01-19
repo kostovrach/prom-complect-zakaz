@@ -232,6 +232,23 @@
                 }
             }
         }
+        &--accent {
+            color: $c-FFFFFF;
+            &::before {
+                background-color: $c-secondary;
+            }
+            &::after {
+                background-color: transparent;
+            }
+
+            @media (pointer: fine) {
+                &:hover {
+                    &::before {
+                        background-color: $c-082605;
+                    }
+                }
+            }
+        }
         &--compact {
             padding: rem(10) rem(48);
             font-size: rem(12);

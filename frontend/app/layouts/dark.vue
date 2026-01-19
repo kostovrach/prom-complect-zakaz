@@ -1,7 +1,7 @@
 <template>
     <div class="page">
-        <TheHeader />
-        <CallToAction />
+        <TheHeader theme="dark" />
+        <CallToAction theme="light" />
         <main class="content">
             <slot></slot>
         </main>

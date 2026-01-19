@@ -1,5 +1,9 @@
 <template>
-    <button class="contact-overlay" type="button" @click="openModalQuestion">
+    <button
+        :class="['contact-overlay', `contact-overlay--${props.theme}`]"
+        type="button"
+        @click="openModalQuestion"
+    >
         <div class="contact-overlay__icon">
             <SvgSprite type="pixel-chat" :size="24" />
         </div>
@@ -9,6 +13,15 @@
 <script setup lang="ts">
     import { ModalsFormQuestion } from '#components';
     import { useModal } from 'vue-final-modal';
+
+    const props = withDefaults(
+        defineProps<{
+            theme?: 'dark' | 'light';
+        }>(),
+        {
+            theme: 'dark',
+        }
+    );
 
     const { open: openModalQuestion, close: _close } = useModal({
         component: ModalsFormQuestion,
@@ -27,15 +40,22 @@
         cursor: pointer;
         position: fixed;
         z-index: 10;
-        right: rem(32);
-        bottom: rem(32);
+        right: rem(16);
+        bottom: rem(16);
         width: rem(64);
         aspect-ratio: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background-color: $c-1C3A19;
+        &--dark {
+            color: $c-EBEBEB;
+            background-color: $c-1C3A19;
+        }
+        &--light {
+            color: $c-accent;
+            background-color: $c-FFF3B0;
+        }
         &::before {
             content: '';
             position: absolute;
@@ -58,9 +78,6 @@
                 scale: 1.7;
                 opacity: 0;
             }
-        }
-        &__icon {
-            color: $c-EBEBEB;
         }
     }
 </style>

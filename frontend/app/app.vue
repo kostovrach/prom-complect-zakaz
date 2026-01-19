@@ -1,7 +1,6 @@
 <template>
     <NuxtPage />
     <ModalsContainer />
-    <CallToAction />
     <ModalsCookie />
 </template>
 

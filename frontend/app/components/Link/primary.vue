@@ -3,7 +3,7 @@
         :is="componentTag"
         v-bind="{ ...attrs, ...$attrs }"
         :id="id || undefined"
-        :class="['link-primary', props.class]"
+        :class="['link-primary', { 'link-primary--reverse': props.reverse }, props.class]"
         :style="{ '--overlay-size': `${props.iconSize / 16}rem` }"
         unstyled
     >
@@ -30,6 +30,7 @@
             id?: string;
             class?: string | Record<string, any>;
             iconSize?: number;
+            reverse?: boolean;
         }>(),
         {
             type: 'a',
@@ -40,6 +41,7 @@
             id: '',
             class: '',
             iconSize: 24,
+            reverse: false,
         }
     );
 
@@ -87,6 +89,9 @@
             font-size: var(--overlay-size);
             font-weight: $fw-semi;
             overflow: clip;
+            @at-root #{$p}--reverse & {
+                transform: scaleX(-1);
+            }
             &::before {
                 content: '(';
             }

@@ -1,10 +1,22 @@
 import nodemailer from 'nodemailer';
-import validator from 'validator';
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
 import Mail from 'nodemailer/lib/mailer';
 import { rateLimit } from '~~/server/utils/rateLimit';
 
 let transporter: nodemailer.Transporter | undefined;
+
+function escapeHtml(html: string): string {
+    if (html.length) {
+        return html
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    } else {
+        return '---';
+    }
+}
 
 export default defineEventHandler(
     async (event): Promise<{ status: number; success: boolean; message?: string }> => {
@@ -49,39 +61,15 @@ export default defineEventHandler(
         }
 
         try {
-            const data = await readMultipartFormData(event);
-            if (!data) {
-                return { status: 400, success: false, message: 'В запросе отсутсвуют данные' };
-            }
+            const { name, phone, comment, payload } = await readBody<{
+                name?: string;
+                phone: string;
+                comment?: string;
+                payload: string;
+            }>(event);
 
-            const getField = (name: string) => {
-                const field = data.find((f) => f.name === name);
-                return field ? Buffer.from(field.data).toString('utf-8') : null;
-            };
-
-            const subject = getField('subject');
-            const name = getField('name');
-            const phone = getField('phone');
-            const message = getField('message');
-            const email = getField('email');
-            const companyName = getField('companyName');
-
-            const fileField = data.find((f) => f.name === 'file') || null;
-
-            if (fileField && fileField.data.length > 10 * 1024 * 1024) {
-                return {
-                    status: 413,
-                    success: false,
-                    message: 'Вложенный файл слишком большой',
-                };
-            }
-
-            if (email && !validator.isEmail(email)) {
-                return {
-                    status: 400,
-                    success: false,
-                    message: 'Некорректный адрес электронной почты',
-                };
+            if (!payload) {
+                return { status: 400, success: false, message: 'В запросе отсутвуют данные' };
             }
 
             if (phone) {
@@ -101,6 +89,8 @@ export default defineEventHandler(
                         message: 'Ошибка валидации номера телефона',
                     };
                 }
+            } else {
+                return { status: 400, success: false, message: 'Отсутствуют необходимые данные' };
             }
 
             const mailOptions: Mail.Options = {
@@ -138,33 +128,34 @@ export default defineEventHandler(
                                 </a>
                             </div>
                             <div class="mail__content">
-                                <h3 class="mail__subtitle">Отправленные данные:</h3>
+                                <h3 class="mail__subtitle">Контактные данные:</h3>
                                 <ul class="mail__data">
-                                    <li class="mail__data-item"><strong>Тема заявки:</strong><span>${subject || '-'}</span></li>
                                     <li class="mail__data-item"><strong>Имя клиента:</strong><span>${name || '-'}</span></li>
-                                    <li class="mail__data-item"><strong>E-mail:</strong><span>${email || '-'}</span></li>
                                     <li class="mail__data-item"><strong>Номер телефона:</strong><span>${phone || '-'}</span></li>
-                                    <li class="mail__data-item"><strong>Название комании:</strong><span>${companyName || '-'}</span></li>
-                                    <li class="mail__data-item"><strong>Вложенные файлы:</strong><span>${fileField ? 'Прикреплены во вложении' : '-'}</span></li>
                                     <li class="mail__data-item mail__data-item--large">
                                         <strong>Дополнительная информация:</strong>
-                                        <p>${message || '-'}</p>
+                                        <p>${comment || '---'}</p>
                                     </li>
+                                </ul>
+                                
+                                <h3 class="mail__subtitle">Результат опроса:</h3>
+                                <ul class="mail__data">
+                                    ${Object.entries(payload)
+                                        .map(([question, answer]) => {
+                                            return `
+                                            <li class="mail__data-item mail__data-item--large">
+                                                <strong>${escapeHtml(question)}:</strong>
+                                                <p> ${escapeHtml(answer)}</p>
+                                            </li>
+                                                `;
+                                        })
+                                        .join('')}
                                 </ul>
                             </div>
                         </div>
                     </body>
                     </html>
                     `,
-                attachments: fileField
-                    ? [
-                          {
-                              filename: fileField.filename || 'attached-file',
-                              content: fileField.data,
-                              contentType: fileField.type || 'application/octet-stream',
-                          },
-                      ]
-                    : undefined,
             };
 
             const res = await transporter.sendMail(mailOptions);
@@ -179,6 +170,7 @@ export default defineEventHandler(
                 message: 'Ошибка сервера, попробуйте повторить попытку позже',
             };
         }
+
         return {
             status: 200,
             success: true,
