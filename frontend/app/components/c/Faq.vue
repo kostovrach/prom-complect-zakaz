@@ -9,7 +9,12 @@
         large-body
         class="c-faq"
     >
-        <Accordion class="c-faq__list" unstyled>
+        <Accordion
+            class="c-faq__list"
+            unstyled
+            @tab-close="activeIdx = undefined"
+            @tab-open="(e) => (activeIdx = e.index)"
+        >
             <AccordionPanel
                 v-for="(item, idx) in content.items"
                 :key="idx"
@@ -20,7 +25,9 @@
                     <AccordionHeader class="c-faq__item-head">
                         <span>{{ item.title }}</span>
                         <template #toggleicon>
-                            <SvgSprite type="triangle" :size="16" />
+                            <div class="c-faq__item-icon">
+                                <SvgSprite type="triangle" :size="16" />
+                            </div>
                         </template>
                     </AccordionHeader>
                     <AccordionContent class="c-faq__item-content">
@@ -88,7 +95,7 @@
             &-icon {
                 min-width: rem(12);
                 transition: transform $td $tf;
-                #{$p}__item--open & {
+                @at-root #{$p}__item--active & {
                     transform: scaleY(-1);
                 }
             }

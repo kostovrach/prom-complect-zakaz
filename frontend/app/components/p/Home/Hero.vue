@@ -9,7 +9,7 @@
                     :icon-size="16"
                     type="NuxtLink"
                     :to="{
-                        name: 'service',
+                        name: 'services-service',
                         params: { service: slugify(service.hero_title) },
                         query: { id: service.id },
                     }"

@@ -8,4 +8,5 @@ export interface IArticle {
     cover_url?: string;
     title: string;
     content: string;
+    hint_enabled: boolean;
 }

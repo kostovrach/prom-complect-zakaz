@@ -17,6 +17,8 @@
                         alignItems: props.alignment === 'center' ? props.alignment : 'flex-start',
                     }"
                 >
+                    <span v-if="props.tag" class="block-layout__tag">{{ props.tag }}</span>
+
                     <h2 class="block-layout__title">
                         <span
                             v-for="(word, idx) in splitTitle"
@@ -44,6 +46,7 @@
         defineProps<{
             title: string;
             subtitle?: string | null;
+            tag?: string | null;
             layout?: 'vertical' | 'horizontal' | 'horizontal-reverse';
             class?: string | Record<string, any>;
             containerClass?: string | Record<string, any>;
@@ -53,6 +56,7 @@
         }>(),
         {
             title: '',
+            tag: null,
             subtitle: null,
             layout: 'vertical',
             class: '',
@@ -153,11 +157,31 @@
                 }
             }
         }
+        &__tag {
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: rem(8);
+            color: $c-082605;
+            font-size: lineScale(16, 14, 480, 1920);
+            font-weight: $fw-semi;
+            opacity: 0.5;
+            &::before {
+                content: '';
+                display: block;
+                width: rem(16);
+                min-width: rem(16);
+                aspect-ratio: 1;
+                background-color: currentColor;
+                clip-path: polygon(0 0, 0% 100%, 100% 100%);
+            }
+        }
         &__title {
             font-family: 'Nuniti', sans-serif;
             text-transform: uppercase;
             font-weight: $fw-bold;
             font-size: lineScale(44, 30, 480, 1920);
+            line-height: 1.2;
             max-width: 35ch;
             @at-root #{$p}--large & {
                 font-size: lineScale(80, 40, 480, 1920);

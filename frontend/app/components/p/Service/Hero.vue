@@ -26,14 +26,10 @@
                     ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ
                 </ButtonPrimary>
             </div>
-            <picture class="service-hero__bg-container">
-                <img
-                    class="service-hero__bg"
-                    :src="props.background_url"
-                    :alt="props.title ?? '#'"
-                />
-            </picture>
         </div>
+        <picture class="service-hero__bg-container">
+            <img class="service-hero__bg" :src="props.background_url" :alt="props.title ?? '#'" />
+        </picture>
     </section>
 </template>
 
@@ -72,14 +68,13 @@
     @use '~/assets/scss/abstracts' as *;
 
     .service-hero {
+        position: relative;
         padding: {
             top: rem(256);
             bottom: rem(96);
         }
-
-        @include content-block;
+        @include content-block($margin: rem(72));
         &__container {
-            position: relative;
             display: grid;
             grid-template-columns: 60% auto;
             grid-template-areas:
@@ -92,58 +87,58 @@
                 display: flex;
                 flex-direction: column;
             }
-            &__bg-container {
-                position: absolute;
-                inset: 0;
-                z-index: -1;
-                filter: brightness(60%);
-                pointer-events: none;
-                @include fullscreen-double-corner;
-            }
-            &__bg {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            &__title {
-                grid-area: title;
-                text-transform: uppercase;
-                font-family: 'Nuniti', sans-serif;
-                font-size: lineScale(80, 32, 480, 1920);
-                font-weight: $fw-bold;
-            }
-            &__advant {
-                grid-area: advant;
-                width: fit-content;
-                display: grid;
-                grid-template-columns: repeat(2, minmax(auto, rem(260)));
-                gap: rem(32);
-                color: $c-FFF3B0;
-                &-item {
-                    display: flex;
-                    align-items: center;
-                    gap: rem(16);
-                }
-                &-icon {
-                    min-width: fit-content;
-                }
-                &-text {
-                    font-size: rem(14);
-                    line-height: 1.2;
-                }
-            }
-            &__content {
-                grid-area: content;
+        }
+        &__bg-container {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            filter: brightness(60%);
+            pointer-events: none;
+            @include fullscreen-double-corner;
+        }
+        &__bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        &__title {
+            grid-area: title;
+            text-transform: uppercase;
+            font-family: 'Nuniti', sans-serif;
+            font-size: lineScale(80, 32, 480, 1920);
+            font-weight: $fw-bold;
+        }
+        &__advant {
+            grid-area: advant;
+            width: fit-content;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(auto, rem(260)));
+            gap: rem(32);
+            color: $c-FFF3B0;
+            &-item {
                 display: flex;
-                flex-direction: column;
-                gap: rem(32);
+                align-items: center;
+                gap: rem(16);
             }
-            &__desc {
-                max-width: 45ch;
-                text-wrap: balance;
-                font-size: lineScale(20, 16, 480, 1920);
-                line-height: 1.4;
+            &-icon {
+                min-width: fit-content;
             }
+            &-text {
+                font-size: rem(14);
+                line-height: 1.2;
+            }
+        }
+        &__content {
+            grid-area: content;
+            display: flex;
+            flex-direction: column;
+            gap: rem(32);
+        }
+        &__desc {
+            max-width: 45ch;
+            text-wrap: balance;
+            font-size: lineScale(20, 16, 480, 1920);
+            line-height: 1.4;
         }
     }
 </style>

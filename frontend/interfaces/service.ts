@@ -55,6 +55,7 @@ export interface IService {
         articles_id: IArticle;
     }[];
 
+    docs_title: string | null;
     docs_items: {
         id: string | null;
         docs_items_id: any;
