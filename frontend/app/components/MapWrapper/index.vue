@@ -103,8 +103,14 @@
         $p: &;
         &__marker {
             &-title {
+                font-size: lineScale(18, 16, 480, 1920);
+                line-height: 1.2;
+                font-weight: $fw-bold;
             }
             &-subtitle {
+                font-size: lineScale(16, 14, 480, 1920);
+                line-height: 1.4;
+                opacity: 0.5;
             }
         }
     }

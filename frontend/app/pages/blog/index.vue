@@ -68,6 +68,16 @@
 </template>
 
 <script setup lang="ts">
+    import type { ISeoSettings } from '~~/interfaces/seo-settings';
+
+    interface IPage extends ISeoSettings {
+        id: string | number;
+        date_created: string;
+        date_updated: string | null;
+    }
+
+    const { content: page } = await useCms<IPage>('blog_page');
+
     const blogStore = useBlogStore();
 
     const tags = computed(() => blogStore.tags);
@@ -82,6 +92,37 @@
     function checkCategory(category: string): boolean {
         return currentCategory.value === slugify(category);
     }
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: page.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: page.value?.meta_description ?? '' },
+            { name: 'robots', content: page.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: page.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: page.value?.meta_title ?? '' },
+            { property: 'og:description', content: page.value?.meta_description ?? '' },
+            { property: 'og:type', content: page.value?.og_type ?? 'website' },
+            { property: 'og:image', content: page.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: page.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (page.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: page.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>
 
 <style lang="scss">

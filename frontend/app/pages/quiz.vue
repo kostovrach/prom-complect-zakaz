@@ -288,7 +288,9 @@
 </template>
 
 <script setup lang="ts">
-    interface IQuiz {
+    import type { ISeoSettings } from '~~/interfaces/seo-settings';
+
+    interface IQuiz extends ISeoSettings {
         id: string | number;
         date_created: string;
         date_updated: string | null;
@@ -437,6 +439,37 @@
         }
     }
     // ================================================================
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: quiz.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: quiz.value?.meta_description ?? '' },
+            { name: 'robots', content: quiz.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: quiz.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: quiz.value?.meta_title ?? '' },
+            { property: 'og:description', content: quiz.value?.meta_description ?? '' },
+            { property: 'og:type', content: quiz.value?.og_type ?? 'website' },
+            { property: 'og:image', content: quiz.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: quiz.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (quiz.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: quiz.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>
 
 <style scoped lang="scss">

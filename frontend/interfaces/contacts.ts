@@ -16,6 +16,7 @@ export interface IContacts {
 
     address: string | null;
     address_description: string | null;
+    map_link: string | null;
     map_points: {
         id: string | number;
         contacts_id: any;

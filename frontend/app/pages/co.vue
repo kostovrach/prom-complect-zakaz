@@ -5,13 +5,27 @@
             :subtitle="content?.hero_subtitle ?? ''"
             :image_url="content?.hero_image_url ?? ''"
         />
+        <PCoAbout
+            :title="content?.about_title ?? ''"
+            :subtitle="content?.advant_subtitle ?? null"
+            :cards="content?.about_cards ?? []"
+            :image_url="content?.about_image_url ?? null"
+            :next-block="content?.advant_title ?? null"
+        />
+        <PCoAdvant
+            :title="content?.advant_title ?? null"
+            :subtitle="content?.advant_subtitle ?? null"
+            :cards="content?.advant_cards ?? []"
+        />
         <CPoints />
-        <CConnection />
+        <CCo />
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-    interface IContent {
+    import type { ISeoSettings } from '~~/interfaces/seo-settings';
+
+    interface IContent extends ISeoSettings {
         id: string | number;
         date_created: string;
         date_updated: string | null;
@@ -39,4 +53,35 @@
     }
 
     const { content } = await useCms<IContent>('co_page');
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: content.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: content.value?.meta_description ?? '' },
+            { name: 'robots', content: content.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: content.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: content.value?.meta_title ?? '' },
+            { property: 'og:description', content: content.value?.meta_description ?? '' },
+            { property: 'og:type', content: content.value?.og_type ?? 'website' },
+            { property: 'og:image', content: content.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: content.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (content.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: content.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>

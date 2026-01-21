@@ -16,8 +16,6 @@ export default defineNuxtConfig({
             },
             link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }],
             meta: [
-                { name: 'robots', content: 'index, follow' },
-                { property: 'og:type', content: 'website' },
                 { name: 'theme-color', content: '#EBEBEB' },
             ],
         },

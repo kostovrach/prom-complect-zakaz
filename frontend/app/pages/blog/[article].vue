@@ -41,7 +41,7 @@
                     </div>
                     <div class="article__suggest-body">
                         <NuxtLink
-                            v-for="item in suggest"
+                            v-for="item in suggest.slice(0, 3)"
                             :key="item.id"
                             class="article__suggest-item"
                             :to="{
@@ -97,6 +97,37 @@
             fatal: true,
         });
     }
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: article.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: article.value?.meta_description ?? '' },
+            { name: 'robots', content: article.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: article.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: article.value?.meta_title ?? '' },
+            { property: 'og:description', content: article.value?.meta_description ?? '' },
+            { property: 'og:type', content: article.value?.og_type ?? 'website' },
+            { property: 'og:image', content: article.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: article.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (article.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: article.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>
 
 <style lang="scss">

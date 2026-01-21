@@ -1,6 +1,7 @@
 import type { IArticle } from './article';
+import type { ISeoSettings } from './seo-settings';
 
-export interface IService {
+export interface IService extends ISeoSettings {
     id: string | number;
     date_created: string;
     date_updated: string | null;

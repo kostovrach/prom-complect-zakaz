@@ -156,6 +156,9 @@
                 align-items: center;
             }
         }
+        &__slider {
+            width: 100%;
+        }
         &__slide {
             &-wrapper {
                 display: flex;

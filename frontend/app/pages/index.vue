@@ -29,8 +29,9 @@
 
 <script setup lang="ts">
     import type { IDirectusFile } from '~~/interfaces/directus-file';
+    import type { ISeoSettings } from '~~/interfaces/seo-settings';
 
-    interface IPage {
+    interface IPage extends ISeoSettings {
         id: string | number;
         date_created: string;
         date_updated: string | null;
@@ -62,4 +63,35 @@
         'hero.home_hero_id.*',
         'hero.home_hero_id.file.*',
     ]);
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: content.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: content.value?.meta_description ?? '' },
+            { name: 'robots', content: content.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: content.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: content.value?.meta_title ?? '' },
+            { property: 'og:description', content: content.value?.meta_description ?? '' },
+            { property: 'og:type', content: content.value?.og_type ?? 'website' },
+            { property: 'og:image', content: content.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: content.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (content.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: content.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>

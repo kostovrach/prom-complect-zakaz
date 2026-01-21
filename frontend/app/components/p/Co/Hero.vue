@@ -9,6 +9,7 @@
                         class="co-hero__button js_button"
                         type="button"
                         button-type="button"
+                        theme="yellow"
                         @click="openModalCo"
                     >
                         Стать партнером
@@ -54,6 +55,7 @@
 
     .co-hero {
         position: relative;
+        @include content-block($margin: rem(96));
         &__wrapper {
             position: relative;
             width: 100%;

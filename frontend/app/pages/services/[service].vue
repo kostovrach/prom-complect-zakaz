@@ -103,6 +103,37 @@
             fatal: true,
         });
     }
+
+    // SEO & Meta ==================================================
+    useHead({
+        title: service.value?.meta_title ?? '',
+        meta: [
+            { name: 'description', content: service.value?.meta_description ?? '' },
+            { name: 'robots', content: service.value?.meta_robots ?? 'index, follow' },
+            { name: 'keywords', content: service.value?.meta_keywords ?? [] },
+
+            { property: 'og:title', content: service.value?.meta_title ?? '' },
+            { property: 'og:description', content: service.value?.meta_description ?? '' },
+            { property: 'og:type', content: service.value?.og_type ?? 'website' },
+            { property: 'og:image', content: service.value?.og_image_url ?? '' },
+            { property: 'og:url', content: useRequestURL().href },
+
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { name: 'twitter:title', content: service.value?.meta_title ?? '' },
+        ],
+    });
+
+    if (service.value?.shema_markup) {
+        useHead({
+            script: [
+                {
+                    type: 'application/ld+json',
+                    innerHTML: service.value.shema_markup || {},
+                },
+            ],
+        });
+    }
+    // =============================================================
 </script>
 
 <style scoped lang="scss">
