@@ -84,6 +84,7 @@
         width: fit-content;
         transition: color $td $tf;
         &__icon {
+            min-width: var(--overlay-size);
             display: flex;
             align-items: center;
             font-size: var(--overlay-size);

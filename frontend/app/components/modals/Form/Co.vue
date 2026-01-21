@@ -34,6 +34,7 @@
                             name="co-phone"
                             placeholder="Телефон"
                             mask="9 (999) 999-99-99"
+                            inputmode="tel"
                             unstyled
                             v-model="formData.phone"
                             @focus="formErrors.phone = false"

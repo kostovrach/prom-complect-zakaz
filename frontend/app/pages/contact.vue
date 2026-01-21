@@ -159,7 +159,7 @@
     @use '~/assets/scss/abstracts' as *;
 
     .contact {
-        @include content-block;
+        @include content-block($margin: rem(128));
         &__container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);

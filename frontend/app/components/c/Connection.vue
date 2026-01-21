@@ -40,7 +40,7 @@
                         :overlay-size="0"
                         @click.prevent="submitForm"
                     >
-                        Отправить 🡭
+                        Отправить
                     </ButtonPrimary>
                     <label class="c-connection__form-agreement" for="c-connection-agreement">
                         <div class="c-connection__form-agreement-checkbox">

@@ -42,6 +42,7 @@
                             name="request-phone"
                             placeholder="Телефон"
                             mask="9 (999) 999-99-99"
+                            inputmode="tel"
                             unstyled
                             @focus="formErrors.phone = false"
                         />

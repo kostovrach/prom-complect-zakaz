@@ -129,7 +129,7 @@
     @use '~/assets/scss/abstracts' as *;
 
     .blog {
-        @include content-block;
+        @include content-block($margin: rem(128));
         &__container {
             @include content-container;
         }

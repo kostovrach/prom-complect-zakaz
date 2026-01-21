@@ -28,6 +28,7 @@
         grid-template-rows: repeat(5, 1fr);
         rotate: 45deg;
         transition: all $td $tf-spring;
+        background-color: transparent;
         @media (pointer: fine) {
             &:hover {
                 scale: 1.5;

@@ -184,7 +184,7 @@
             line-height: 1.2;
             max-width: 35ch;
             @at-root #{$p}--large & {
-                font-size: lineScale(80, 40, 480, 1920);
+                font-size: lineScale(80, 30, 480, 1920);
             }
             > span {
                 color: transparent;

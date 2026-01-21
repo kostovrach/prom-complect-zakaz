@@ -92,6 +92,7 @@
             padding: rem(132) lineScale(64, 16, 480, 1920);
             @include double-corner;
             @media (max-width: 768px) {
+                padding: rem(48) rem(16);
                 clip-path: none;
             }
             &-title {
